@@ -140,12 +140,16 @@ export class AuthService {
         update: {
           createdAt: new Date(repo.created_at),
           updatedAt: new Date(repo.updated_at),
+          owner: repo.owner.login || "",
+          description: repo.description || "",
         },
         create: {
           userId: req.userId!,
           provider: "GITHUB",
           repoId: repo.id.toString(),
           name: repo.name,
+          description: repo.description || "",
+          owner: repo.owner.login || "",
           fullName: repo.full_name,
           private: repo.private,
           url: repo.html_url,

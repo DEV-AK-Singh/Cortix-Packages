@@ -38,8 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Fetch GitHub repos if user is connected
     fetchGithubRepos(token)
-      .then((data) => {
-        console.log("Fetched GitHub repos:", data);
+      .then((data) => { 
         setRepos(data);
       })
       .catch(() => setRepos([])); 
