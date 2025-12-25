@@ -27,6 +27,27 @@ export async function createProject(req: AuthRequest, res: Response) {
     res.json(project);
 }
 
+export async function getProjects(req: AuthRequest, res: Response) {
+    const projects = await prisma.project.findMany({
+        where: {
+            userId: req.userId,
+        },
+    });
+    res.json(projects);
+}
+
+export async function getProjectById(req: AuthRequest, res: Response) {
+    console.log("getProjectById called with params:", req.params);
+    const { repoId: projectId, repoBranch } = req.params;
+    const project = await prisma.project.findFirst({
+        where: {
+            id: projectId,
+            defaultBranch: repoBranch
+        },
+    }); 
+    res.json(project);
+}
+
 export async function getBranches(req: AuthRequest, res: Response) {
     const { repoOwner, repoName } = req.params;
     if (!repoOwner || !repoName) {

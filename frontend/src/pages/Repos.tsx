@@ -25,7 +25,7 @@ export function Repos() {
     try {
       setLoadingRepo(repo.id);
       const project = await createProject(repo.owner, repo.name, branch, token);
-      navigate(`/projects/${project.id}`);
+      navigate(`/projects/${project.id}/branches/${branch}`);
     } catch (err) {
       console.error(err);
       alert("Failed to create project");

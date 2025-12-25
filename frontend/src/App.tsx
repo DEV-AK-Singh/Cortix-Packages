@@ -31,7 +31,7 @@ export default function App() {
             }
           />
           <Route
-            path="/projects/:id"
+            path="/projects/:id/branches/:branch"
             element={
               <ProtectedRoute>
                 <Project />
