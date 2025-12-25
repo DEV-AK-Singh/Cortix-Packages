@@ -6,6 +6,7 @@ import { detectEntry } from "./detectors/entry.detector";
 import { detectEnv } from "./detectors/env.detector";
 import { detectServices } from "./detectors/service.detector";
 import { calculateConfidence } from "./confidence/confidence";
+import { detectDocker } from "./detectors/docker.detector";
 import { safeReadJSON } from "../utils/fs-safe";
 
 export async function runAnalysis({
@@ -51,7 +52,7 @@ export async function runAnalysis({
         entry,
         env,
         services,
-        docker: { supported: false, strategy: "generated" },
+        docker: { supported: detectDocker(repo), strategy: "generated" },
         confidence,
         warnings,
         version: "v1",
