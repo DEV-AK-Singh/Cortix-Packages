@@ -11,6 +11,7 @@ import googleRoutes from "./auth/google/google.routes";
 import "./auth/google/google.service";
 import userRoutes from "./auth/user/user.routes";
 import projectRoutes from "./projects/project.routes";
+import { analysisQueue } from "./queue/analysis.queue";
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.use(passport.initialize());
 app.use("/auth/github", githubRoutes);
 app.use("/auth/google", googleRoutes);
 app.use("/auth/user", userRoutes);
-app.use("/api", projectRoutes);
+app.use("/api", projectRoutes); 
 
 app.get("/health", async (_req, res) => {
     let dbStatus = "unhealthy";
