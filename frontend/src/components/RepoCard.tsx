@@ -27,7 +27,7 @@ export function RepoCard({
       setBranchLoading(true);
 
       const res = await fetch(
-        `http://localhost:5000/api/repos/${repo.owner}/${repo.name}/branches`,
+        `http://localhost:5000/api/projects/repos/${repo.owner}/${repo.name}/branches`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

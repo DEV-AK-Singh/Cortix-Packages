@@ -7,7 +7,7 @@
     "start": "tsc && node dist/src/server.js",
     "build": "tsc",
     "dev": "ts-node-dev --watch --respawn src/server.ts",
-    "worker:analysis": "ts-node-dev --watch --respawn src/worker/analyzer.worker.ts"
+    "worker:analysis": "ts-node-dev --watch --respawn src/worker/index.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.3.0",
