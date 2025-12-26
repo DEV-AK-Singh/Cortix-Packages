@@ -18,6 +18,7 @@ import { RepoMetadataDetector } from "./repoMetadata.detector"
 import { RuntimeDetector } from "./runtime.detector";
 import { FrameworkDetector } from "./framework.detector";
 import { APIStyleDetector } from "./apiStyle.detector";
+import { EntryPointDetector } from "./entryPoint.detector";
 
 const TEST_REPO_PATH = "C:\\Users\\Abhishek\\Desktop\\Revise\\Projects\\Droppers-App"
 
@@ -25,24 +26,28 @@ const runTests = async () => {
     const finalResult = {} as any;
 
     console.log("Running RepoMetadataDetector tests...");
-    const repoMetadataResult = await RepoMetadataDetector.detect(TEST_REPO_PATH)
+    const repoMetadataResult = await RepoMetadataDetector.detect(TEST_REPO_PATH);
     finalResult["RepoMetadataDetector"] = repoMetadataResult;
 
-    console.log("Running LanguageCompositionDetector tests...")
-    const languageCompositionResult = await LanguageCompositionDetector.detect(TEST_REPO_PATH)
+    console.log("Running LanguageCompositionDetector tests...");
+    const languageCompositionResult = await LanguageCompositionDetector.detect(TEST_REPO_PATH);
     finalResult["LanguageCompositionDetector"] = languageCompositionResult;
 
-    console.log("Running RuntimeDetector tests...")
-    const runtimeResult = await RuntimeDetector.detect(TEST_REPO_PATH)
+    console.log("Running RuntimeDetector tests...");
+    const runtimeResult = await RuntimeDetector.detect(TEST_REPO_PATH);
     finalResult["RuntimeDetector"] = runtimeResult;
 
-    console.log("Running FrameworkDetector tests...") 
-    const frameworkResult = await FrameworkDetector.detect(TEST_REPO_PATH)
+    console.log("Running FrameworkDetector tests...");
+    const frameworkResult = await FrameworkDetector.detect(TEST_REPO_PATH);
     finalResult["FrameworkDetector"] = frameworkResult;
 
-    console.log("Running ApiStyleDetector tests...")
-    const apiStyleResult = await APIStyleDetector.detect(TEST_REPO_PATH)
+    console.log("Running ApiStyleDetector tests...");
+    const apiStyleResult = await APIStyleDetector.detect(TEST_REPO_PATH);
     finalResult["ApiStyleDetector"] = apiStyleResult;
+
+    console.log("Running EntryPointDetector tests...");
+    const entryPointResult = await EntryPointDetector.detect(TEST_REPO_PATH);
+    finalResult["EntryPointDetector"] = entryPointResult;
 
     await fs.promises.writeFile("testResults.json", JSON.stringify(finalResult, null, 2)); 
     console.log("All tests completed. Writing results to testResults.json");

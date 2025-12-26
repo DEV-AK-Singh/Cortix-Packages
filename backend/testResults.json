@@ -3,7 +3,7 @@
     "success": true,
     "data": {
       "repoName": "Droppers-App",
-      "scanTimestamp": "Fri, 26 Dec 2025 18:59:14 GMT",
+      "scanTimestamp": "Fri, 26 Dec 2025 19:09:52 GMT",
       "totalFiles": 57,
       "directories": [
         "backend",
@@ -62,15 +62,6 @@
     "success": true,
     "data": [
       {
-        "name": "Express",
-        "confidence": 0.8,
-        "indicators": [
-          "package.json"
-        ],
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
-        "relativePath": "backend"
-      },
-      {
         "name": "React",
         "confidence": 0.9,
         "indicators": [
@@ -78,6 +69,15 @@
         ],
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
         "relativePath": "frontend"
+      },
+      {
+        "name": "Express",
+        "confidence": 0.8,
+        "indicators": [
+          "package.json"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend"
       }
     ]
   },
@@ -88,7 +88,7 @@
         "style": "rest",
         "confidence": 0.8,
         "indicators": [
-          "RESTful patterns (routes/controllers/openapi)"
+          "RESTful patterns (routes/controllers/openapi/etc.)"
         ],
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
         "relativePath": "backend"
@@ -97,10 +97,23 @@
         "style": "rest",
         "confidence": 0.8,
         "indicators": [
-          "RESTful patterns (routes/controllers/openapi)"
+          "RESTful patterns (routes/controllers/openapi/etc.)"
         ],
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
         "relativePath": "frontend"
+      }
+    ]
+  },
+  "EntryPointDetector": {
+    "success": true,
+    "data": [
+      {
+        "runtime": "node",
+        "entryType": "script",
+        "command": "npm run start",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend",
+        "confidence": 0.95
       }
     ]
   }

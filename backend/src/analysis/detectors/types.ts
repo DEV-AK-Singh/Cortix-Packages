@@ -41,3 +41,13 @@ export interface APIStyleInfo {
   path: string;
   relativePath: string;
 }
+
+export interface EntryPointInfo {
+  runtime: RuntimeType
+  entryType: "script" | "binary" | "framework" | "unknown"
+  command?: string
+  file?: string
+  path: string
+  relativePath: string
+  confidence: number
+}
