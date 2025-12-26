@@ -70,8 +70,18 @@ export interface EnvVarInfo {
 }
 
 export interface EnvServiceInfo {
-  path: string
-  relativePath: string
   declared: EnvVarInfo[]
   used: EnvVarInfo[]
+  path: string
+  relativePath: string
+}
+
+export interface ToolingInfo {
+  linter?: string
+  formatter?: string
+  compiler?: string
+  testFrameworks?: string[]
+  indicators: string[]
+  path?: string
+  relativePath?: string
 }

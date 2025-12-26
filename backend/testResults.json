@@ -3,7 +3,7 @@
     "success": true,
     "data": {
       "repoName": "Droppers-App",
-      "scanTimestamp": "Fri, 26 Dec 2025 20:35:10 GMT",
+      "scanTimestamp": "Fri, 26 Dec 2025 22:05:48 GMT",
       "totalFiles": 74,
       "directories": [
         "backend",
@@ -48,15 +48,15 @@
         "runtime": "node",
         "packageManager": "npm",
         "startCommand": "npm run start",
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
-        "relativePath": "backend"
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy"
       },
       {
         "runtime": "node",
         "packageManager": "npm",
         "startCommand": "npm run start",
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
-        "relativePath": "backend - Copy"
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend"
       },
       {
         "runtime": "node",
@@ -75,8 +75,8 @@
         "indicators": [
           "package.json"
         ],
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
-        "relativePath": "backend - Copy"
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend"
       },
       {
         "name": "Express",
@@ -84,8 +84,8 @@
         "indicators": [
           "package.json"
         ],
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
-        "relativePath": "backend"
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy"
       },
       {
         "name": "React",
@@ -164,13 +164,6 @@
         "confidence": 0.9
       },
       {
-        "type": "unknown",
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
-        "relativePath": "frontend",
-        "indicators": [],
-        "confidence": 0.5
-      },
-      {
         "type": "postgres",
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
         "relativePath": "backend - Copy",
@@ -178,6 +171,13 @@
           "pg/prisma"
         ],
         "confidence": 0.9
+      },
+      {
+        "type": "unknown",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
+        "relativePath": "frontend",
+        "indicators": [],
+        "confidence": 0.5
       }
     ]
   },
@@ -185,8 +185,8 @@
     "success": true,
     "data": [
       {
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
-        "relativePath": "backend",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy",
         "declared": [
           {
             "name": "APP_NAME",
@@ -278,8 +278,8 @@
         ]
       },
       {
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
-        "relativePath": "backend - Copy",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend",
         "declared": [
           {
             "name": "APP_NAME",
@@ -416,6 +416,41 @@
           }
         ],
         "used": []
+      }
+    ]
+  },
+  "ToolingDetector": {
+    "success": true,
+    "data": [
+      {
+        "compiler": "TypeScript",
+        "testFrameworks": [],
+        "indicators": [
+          "tsconfig.json"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend"
+      },
+      {
+        "compiler": "TypeScript",
+        "testFrameworks": [],
+        "indicators": [
+          "tsconfig.json"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy"
+      },
+      {
+        "linter": "ESLint",
+        "compiler": "Vite",
+        "testFrameworks": [],
+        "indicators": [
+          "eslint.config.js",
+          "tsconfig.json",
+          "vite.config.ts"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
+        "relativePath": "frontend"
       }
     ]
   }
