@@ -3,7 +3,7 @@
     "success": true,
     "data": {
       "repoName": "Droppers-App",
-      "scanTimestamp": "Fri, 26 Dec 2025 23:08:50 GMT",
+      "scanTimestamp": "Fri, 26 Dec 2025 23:27:57 GMT",
       "totalFiles": 74,
       "directories": [
         "backend",
@@ -432,15 +432,6 @@
         "relativePath": "backend"
       },
       {
-        "compiler": "TypeScript",
-        "testFrameworks": [],
-        "indicators": [
-          "tsconfig.json"
-        ],
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
-        "relativePath": "backend - Copy"
-      },
-      {
         "linter": "ESLint",
         "compiler": "Vite",
         "testFrameworks": [],
@@ -451,6 +442,15 @@
         ],
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
         "relativePath": "frontend"
+      },
+      {
+        "compiler": "TypeScript",
+        "testFrameworks": [],
+        "indicators": [
+          "tsconfig.json"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy"
       }
     ]
   },
@@ -494,8 +494,8 @@
           ".dockerignore",
           "Dockerfile"
         ],
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
-        "relativePath": "backend",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy",
         "confidence": 0.9
       },
       {
@@ -508,8 +508,8 @@
           ".dockerignore",
           "Dockerfile"
         ],
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
-        "relativePath": "backend - Copy",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend",
         "confidence": 0.9
       },
       {
@@ -532,6 +532,12 @@
     "success": false,
     "warnings": [
       "No CI/CD configuration found"
+    ]
+  },
+  "DeploymentPlatformDetector": {
+    "success": false,
+    "warnings": [
+      "No deployment configuration detected"
     ]
   }
 }

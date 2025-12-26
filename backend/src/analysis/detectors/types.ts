@@ -108,3 +108,15 @@ export interface CICDInfo {
   relativePath?: string
   confidence: number
 };
+
+export type DeploymentType = "vercel" | "netlify" | "railway" | "render" | "flyio" | "aws" | "gcp" | "azure" | "unknown";
+
+export interface DeploymentInfo {
+  provider: DeploymentType
+  indicators: string[]
+  configFiles?: string[]
+  path?: string
+  relativePath?: string
+  confidence: number
+}
+
