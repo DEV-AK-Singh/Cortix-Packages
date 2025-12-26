@@ -22,7 +22,7 @@ export interface RuntimeInfo {
   startCommand?: string
   path?: string          // absolute path
   relativePath?: string  // from repo root
-}
+};
 
 export interface FrameworkInfo {
   name: string
@@ -30,7 +30,7 @@ export interface FrameworkInfo {
   indicators: string[],
   path?: string  // relative path from repo root
   relativePath?: string // from repo root
-}
+};
 
 export type APIStyle = "graphql" | "grpc" | "rest" | "rpc" | "none";
 
@@ -40,7 +40,7 @@ export interface APIStyleInfo {
   indicators: string[];
   path: string;
   relativePath: string;
-}
+};
 
 export interface EntryPointInfo {
   runtime: RuntimeType
@@ -50,7 +50,7 @@ export interface EntryPointInfo {
   path: string
   relativePath: string
   confidence: number
-}
+};
 
 export type DatabaseType = "postgres" | "mysql" | "mongodb" | "redis" | "sqlite" | "dynamodb" | "unknown"
 
@@ -61,20 +61,20 @@ export interface DatabaseInfo {
   relativePath: string  // from repo root
   indicators: string[]
   confidence: number
-}
+};
 
 export interface EnvVarInfo {
   name: string
   source: "env-file" | "code"
   confidence: number
-}
+};
 
 export interface EnvServiceInfo {
   declared: EnvVarInfo[]
   used: EnvVarInfo[]
   path: string
   relativePath: string
-}
+};
 
 export interface ToolingInfo {
   linter?: string
@@ -84,4 +84,27 @@ export interface ToolingInfo {
   indicators: string[]
   path?: string
   relativePath?: string
-}
+};
+
+export interface ContainerizationInfo {
+  containerized: boolean
+  strategy: "existing" | "generated" | "partial"
+  dockerfiles?: string[]
+  composeFiles?: string[]
+  services?: string[]
+  path?: string
+  relativePath?: string
+  indicators: string[]
+  confidence: number
+};
+
+export type CICDType = "github-actions" | "gitlab-ci" | "circleci" | "azure-pipelines" | "unknown";
+
+export interface CICDInfo {
+  provider: CICDType
+  configFiles: string[]
+  indicators: string[]
+  path?: string
+  relativePath?: string
+  confidence: number
+};

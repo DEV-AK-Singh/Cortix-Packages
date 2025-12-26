@@ -22,6 +22,8 @@ import { EntryPointDetector } from "./entryPoint.detector";
 import { DatabaseDetector } from "./database.detector";
 import { ENVVarDetector } from "./envVar.detector";
 import { ToolingDetector } from "./tooling.detector";
+import { ContainerizationDetector } from "./containerization.detector";
+import { CICDDetector } from "./cicd.detector";
 
 const TEST_REPO_PATH = "C:\\Users\\Abhishek\\Desktop\\Revise\\Projects\\Droppers-App"
 
@@ -63,6 +65,14 @@ const runTests = async () => {
     console.log("Running ToolingDetector tests...");
     const toolingResult = await ToolingDetector.detect(TEST_REPO_PATH);
     finalResult["ToolingDetector"] = toolingResult;
+
+    console.log("Running ContainerizationDetector tests...");
+    const containerizationResult = await ContainerizationDetector.detect(TEST_REPO_PATH);
+    finalResult["ContainerizationDetector"] = containerizationResult;
+
+    console.log("Running CiCdDetector tests...");
+    const ciCdResult = await CICDDetector.detect(TEST_REPO_PATH);
+    finalResult["CiCdDetector"] = ciCdResult;
 
     await fs.promises.writeFile("testResults.json", JSON.stringify(finalResult, null, 2)); 
     console.log("All tests completed. Writing results to testResults.json");

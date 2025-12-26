@@ -3,7 +3,7 @@
     "success": true,
     "data": {
       "repoName": "Droppers-App",
-      "scanTimestamp": "Fri, 26 Dec 2025 22:05:48 GMT",
+      "scanTimestamp": "Fri, 26 Dec 2025 23:08:50 GMT",
       "totalFiles": 74,
       "directories": [
         "backend",
@@ -48,15 +48,15 @@
         "runtime": "node",
         "packageManager": "npm",
         "startCommand": "npm run start",
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
-        "relativePath": "backend - Copy"
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend"
       },
       {
         "runtime": "node",
         "packageManager": "npm",
         "startCommand": "npm run start",
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
-        "relativePath": "backend"
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy"
       },
       {
         "runtime": "node",
@@ -185,8 +185,8 @@
     "success": true,
     "data": [
       {
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
-        "relativePath": "backend - Copy",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend",
         "declared": [
           {
             "name": "APP_NAME",
@@ -278,8 +278,8 @@
         ]
       },
       {
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
-        "relativePath": "backend",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy",
         "declared": [
           {
             "name": "APP_NAME",
@@ -452,6 +452,86 @@
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
         "relativePath": "frontend"
       }
+    ]
+  },
+  "ContainerizationDetector": {
+    "success": true,
+    "data": [
+      {
+        "containerized": true,
+        "strategy": "partial",
+        "composeFiles": [
+          "docker-compose.yml"
+        ],
+        "services": [
+          "postgres",
+          "image",
+          "container_name",
+          "environment",
+          "ports",
+          "volumes",
+          "networks",
+          "healthcheck",
+          "backend",
+          "build",
+          "depends_on",
+          "frontend"
+        ],
+        "indicators": [
+          "docker-compose.yml"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App",
+        "relativePath": ".",
+        "confidence": 0.7
+      },
+      {
+        "containerized": true,
+        "strategy": "existing",
+        "dockerfiles": [
+          "Dockerfile"
+        ],
+        "indicators": [
+          ".dockerignore",
+          "Dockerfile"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend",
+        "confidence": 0.9
+      },
+      {
+        "containerized": true,
+        "strategy": "existing",
+        "dockerfiles": [
+          "Dockerfile"
+        ],
+        "indicators": [
+          ".dockerignore",
+          "Dockerfile"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy",
+        "confidence": 0.9
+      },
+      {
+        "containerized": true,
+        "strategy": "existing",
+        "dockerfiles": [
+          "Dockerfile"
+        ],
+        "indicators": [
+          ".dockerignore",
+          "Dockerfile"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
+        "relativePath": "frontend",
+        "confidence": 0.9
+      }
+    ]
+  },
+  "CiCdDetector": {
+    "success": false,
+    "warnings": [
+      "No CI/CD configuration found"
     ]
   }
 }
