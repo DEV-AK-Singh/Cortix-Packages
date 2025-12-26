@@ -3,7 +3,7 @@
     "success": true,
     "data": {
       "repoName": "Droppers-App",
-      "scanTimestamp": "Fri, 26 Dec 2025 17:57:28 GMT",
+      "scanTimestamp": "Fri, 26 Dec 2025 18:44:58 GMT",
       "totalFiles": 57,
       "directories": [
         "backend",
@@ -46,15 +46,38 @@
       {
         "runtime": "node",
         "packageManager": "npm",
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
-        "relativePath": "frontend"
+        "startCommand": "npm run start",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend"
       },
       {
         "runtime": "node",
         "packageManager": "npm",
-        "startCommand": "npm run start",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
+        "relativePath": "frontend"
+      }
+    ]
+  },
+  "FrameworkDetector": {
+    "success": true,
+    "data": [
+      {
+        "name": "Express",
+        "confidence": 0.8,
+        "indicators": [
+          "package.json"
+        ],
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
         "relativePath": "backend"
+      },
+      {
+        "name": "React",
+        "confidence": 0.9,
+        "indicators": [
+          "package.json"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
+        "relativePath": "frontend"
       }
     ]
   }

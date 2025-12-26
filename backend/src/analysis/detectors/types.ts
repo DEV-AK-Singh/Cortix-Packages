@@ -24,3 +24,10 @@ export interface RuntimeInfo {
   relativePath?: string  // from repo root
 }
 
+export interface FrameworkInfo {
+  name: string
+  confidence: number
+  indicators: string[],
+  path?: string  // relative path from repo root
+  relativePath?: string // from repo root
+}
