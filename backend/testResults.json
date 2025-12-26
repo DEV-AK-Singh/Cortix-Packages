@@ -1,0 +1,61 @@
+{
+  "RepoMetadataDetector": {
+    "success": true,
+    "data": {
+      "repoName": "Droppers-App",
+      "scanTimestamp": "Fri, 26 Dec 2025 17:57:28 GMT",
+      "totalFiles": 57,
+      "directories": [
+        "backend",
+        "database",
+        "frontend"
+      ]
+    }
+  },
+  "LanguageCompositionDetector": {
+    "success": true,
+    "data": {
+      "primaryLanguage": "TypeScript",
+      "languages": [
+        {
+          "name": "TypeScript",
+          "percentage": 71.43
+        },
+        {
+          "name": "JSON",
+          "percentage": 21.43
+        },
+        {
+          "name": "Shell",
+          "percentage": 2.38
+        },
+        {
+          "name": "YAML",
+          "percentage": 2.38
+        },
+        {
+          "name": "JavaScript",
+          "percentage": 2.38
+        }
+      ]
+    }
+  },
+  "RuntimeDetector": {
+    "success": true,
+    "data": [
+      {
+        "runtime": "node",
+        "packageManager": "npm",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
+        "relativePath": "frontend"
+      },
+      {
+        "runtime": "node",
+        "packageManager": "npm",
+        "startCommand": "npm run start",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend"
+      }
+    ]
+  }
+}
