@@ -20,6 +20,7 @@ import { FrameworkDetector } from "./framework.detector";
 import { APIStyleDetector } from "./apiStyle.detector";
 import { EntryPointDetector } from "./entryPoint.detector";
 import { DatabaseDetector } from "./database.detector";
+import { ENVVarDetector } from "./envVar.detector";
 
 const TEST_REPO_PATH = "C:\\Users\\Abhishek\\Desktop\\Revise\\Projects\\Droppers-App"
 
@@ -53,6 +54,10 @@ const runTests = async () => {
     console.log("Running DatabaseDetector tests...");
     const databaseResult = await DatabaseDetector.detect(TEST_REPO_PATH);
     finalResult["DatabaseDetector"] = databaseResult;
+
+    console.log("Running EnvVarDetector tests...");
+    const envVarResult = await ENVVarDetector.detect(TEST_REPO_PATH);
+    finalResult["EnvVarDetector"] = envVarResult;
 
     await fs.promises.writeFile("testResults.json", JSON.stringify(finalResult, null, 2)); 
     console.log("All tests completed. Writing results to testResults.json");

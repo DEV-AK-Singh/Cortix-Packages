@@ -3,7 +3,7 @@
     "success": true,
     "data": {
       "repoName": "Droppers-App",
-      "scanTimestamp": "Fri, 26 Dec 2025 20:06:47 GMT",
+      "scanTimestamp": "Fri, 26 Dec 2025 20:35:10 GMT",
       "totalFiles": 74,
       "directories": [
         "backend",
@@ -75,8 +75,8 @@
         "indicators": [
           "package.json"
         ],
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
-        "relativePath": "backend"
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy"
       },
       {
         "name": "Express",
@@ -84,8 +84,8 @@
         "indicators": [
           "package.json"
         ],
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
-        "relativePath": "backend - Copy"
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend"
       },
       {
         "name": "React",
@@ -164,6 +164,13 @@
         "confidence": 0.9
       },
       {
+        "type": "unknown",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
+        "relativePath": "frontend",
+        "indicators": [],
+        "confidence": 0.5
+      },
+      {
         "type": "postgres",
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
         "relativePath": "backend - Copy",
@@ -171,13 +178,244 @@
           "pg/prisma"
         ],
         "confidence": 0.9
+      }
+    ]
+  },
+  "EnvVarDetector": {
+    "success": true,
+    "data": [
+      {
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend",
+        "declared": [
+          {
+            "name": "APP_NAME",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "APP_VERSION",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "NODE_ENV",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "PORT",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "FRONTEND_URL_DEV",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "FRONTEND_URL_PROD",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "BACKEND_URL_DEV",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "BACKEND_URL_PROD",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "DATABASE_URL",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "JWT_SECRET",
+            "source": "env-file",
+            "confidence": 1
+          }
+        ],
+        "used": [
+          {
+            "name": "PORT",
+            "source": "code",
+            "confidence": 0.9
+          },
+          {
+            "name": "NODE_ENV",
+            "source": "code",
+            "confidence": 0.9
+          },
+          {
+            "name": "FRONTEND_URL_PROD",
+            "source": "code",
+            "confidence": 0.9
+          },
+          {
+            "name": "FRONTEND_URL_DEV",
+            "source": "code",
+            "confidence": 0.9
+          },
+          {
+            "name": "BACKEND_URL_PROD",
+            "source": "code",
+            "confidence": 0.9
+          },
+          {
+            "name": "BACKEND_URL_DEV",
+            "source": "code",
+            "confidence": 0.9
+          },
+          {
+            "name": "JWT_SECRET",
+            "source": "code",
+            "confidence": 0.9
+          }
+        ]
       },
       {
-        "type": "unknown",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy",
+        "declared": [
+          {
+            "name": "APP_NAME",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "APP_VERSION",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "NODE_ENV",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "PORT",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "FRONTEND_URL_DEV",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "FRONTEND_URL_PROD",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "BACKEND_URL_DEV",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "BACKEND_URL_PROD",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "DATABASE_URL",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "JWT_SECRET",
+            "source": "env-file",
+            "confidence": 1
+          }
+        ],
+        "used": [
+          {
+            "name": "PORT",
+            "source": "code",
+            "confidence": 0.9
+          },
+          {
+            "name": "NODE_ENV",
+            "source": "code",
+            "confidence": 0.9
+          },
+          {
+            "name": "FRONTEND_URL_PROD",
+            "source": "code",
+            "confidence": 0.9
+          },
+          {
+            "name": "FRONTEND_URL_DEV",
+            "source": "code",
+            "confidence": 0.9
+          },
+          {
+            "name": "BACKEND_URL_PROD",
+            "source": "code",
+            "confidence": 0.9
+          },
+          {
+            "name": "BACKEND_URL_DEV",
+            "source": "code",
+            "confidence": 0.9
+          },
+          {
+            "name": "JWT_SECRET",
+            "source": "code",
+            "confidence": 0.9
+          }
+        ]
+      },
+      {
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
         "relativePath": "frontend",
-        "indicators": [],
-        "confidence": 0.5
+        "declared": [
+          {
+            "name": "VITE_APP_NAME",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "VITE_APP_VERSION",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "VITE_NODE_ENV",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "VITE_FRONTEND_URL_DEV",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "VITE_FRONTEND_URL_PROD",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "VITE_BACKEND_URL_DEV",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "VITE_BACKEND_URL_PROD",
+            "source": "env-file",
+            "confidence": 1
+          },
+          {
+            "name": "VITE_API_BASE_URL",
+            "source": "env-file",
+            "confidence": 1
+          }
+        ],
+        "used": []
       }
     ]
   }

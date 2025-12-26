@@ -3,6 +3,7 @@ import path from "path"
 import fs from "fs/promises"
 import { Detector, DetectorResult } from "./base"
 import { EntryPointInfo } from "./types"
+import { ANALYSIS_IGNORE } from "./constants"
 
 export const EntryPointDetector: Detector<EntryPointInfo[]> = {
   name: "EntryPointDetector",
@@ -29,7 +30,7 @@ export const EntryPointDetector: Detector<EntryPointInfo[]> = {
         {
           cwd: normalizedRepoPath,
           deep: 5,
-          ignore: ["**/node_modules/**", "**/.git/**", "**/dist/**"],
+          ignore: ANALYSIS_IGNORE,
           absolute: true,
         }
       )

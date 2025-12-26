@@ -62,3 +62,16 @@ export interface DatabaseInfo {
   indicators: string[]
   confidence: number
 }
+
+export interface EnvVarInfo {
+  name: string
+  source: "env-file" | "code"
+  confidence: number
+}
+
+export interface EnvServiceInfo {
+  path: string
+  relativePath: string
+  declared: EnvVarInfo[]
+  used: EnvVarInfo[]
+}

@@ -3,6 +3,7 @@ import path from "path"
 import fs from "fs/promises"
 import { Detector, DetectorResult } from "./base"
 import { DatabaseInfo, DatabaseType } from "./types"
+import { ANALYSIS_IGNORE } from "./constants"
 
 export const DatabaseDetector: Detector<DatabaseInfo[]> = {
   name: "DatabaseDetector",
@@ -24,7 +25,7 @@ export const DatabaseDetector: Detector<DatabaseInfo[]> = {
         {
           cwd: normalizedRepoPath,
           deep: 5,
-          ignore: ["**/node_modules/**", "**/.git/**", "**/dist/**"],
+          ignore: ANALYSIS_IGNORE,
           absolute: true,
         }
       )
