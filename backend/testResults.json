@@ -3,7 +3,7 @@
     "success": true,
     "data": {
       "repoName": "Droppers-App",
-      "scanTimestamp": "Fri, 26 Dec 2025 18:44:58 GMT",
+      "scanTimestamp": "Fri, 26 Dec 2025 18:59:14 GMT",
       "totalFiles": 57,
       "directories": [
         "backend",
@@ -75,6 +75,29 @@
         "confidence": 0.9,
         "indicators": [
           "package.json"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
+        "relativePath": "frontend"
+      }
+    ]
+  },
+  "ApiStyleDetector": {
+    "success": true,
+    "data": [
+      {
+        "style": "rest",
+        "confidence": 0.8,
+        "indicators": [
+          "RESTful patterns (routes/controllers/openapi)"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend"
+      },
+      {
+        "style": "rest",
+        "confidence": 0.8,
+        "indicators": [
+          "RESTful patterns (routes/controllers/openapi)"
         ],
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
         "relativePath": "frontend"

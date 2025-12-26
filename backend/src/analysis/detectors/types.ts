@@ -31,3 +31,13 @@ export interface FrameworkInfo {
   path?: string  // relative path from repo root
   relativePath?: string // from repo root
 }
+
+export type APIStyle = "graphql" | "grpc" | "rest" | "rpc" | "none";
+
+export interface APIStyleInfo {
+  style: APIStyle;
+  confidence: number;
+  indicators: string[];
+  path: string;
+  relativePath: string;
+}
