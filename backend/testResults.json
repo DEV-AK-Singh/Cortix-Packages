@@ -3,10 +3,11 @@
     "success": true,
     "data": {
       "repoName": "Droppers-App",
-      "scanTimestamp": "Fri, 26 Dec 2025 19:09:52 GMT",
-      "totalFiles": 57,
+      "scanTimestamp": "Fri, 26 Dec 2025 20:06:47 GMT",
+      "totalFiles": 74,
       "directories": [
         "backend",
+        "backend - Copy",
         "database",
         "frontend"
       ]
@@ -23,19 +24,19 @@
         },
         {
           "name": "JSON",
-          "percentage": 21.43
+          "percentage": 23.21
         },
         {
           "name": "Shell",
-          "percentage": 2.38
+          "percentage": 1.79
         },
         {
           "name": "YAML",
-          "percentage": 2.38
+          "percentage": 1.79
         },
         {
           "name": "JavaScript",
-          "percentage": 2.38
+          "percentage": 1.79
         }
       ]
     }
@@ -53,6 +54,13 @@
       {
         "runtime": "node",
         "packageManager": "npm",
+        "startCommand": "npm run start",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy"
+      },
+      {
+        "runtime": "node",
+        "packageManager": "npm",
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
         "relativePath": "frontend"
       }
@@ -62,15 +70,6 @@
     "success": true,
     "data": [
       {
-        "name": "React",
-        "confidence": 0.9,
-        "indicators": [
-          "package.json"
-        ],
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
-        "relativePath": "frontend"
-      },
-      {
         "name": "Express",
         "confidence": 0.8,
         "indicators": [
@@ -78,6 +77,24 @@
         ],
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
         "relativePath": "backend"
+      },
+      {
+        "name": "Express",
+        "confidence": 0.8,
+        "indicators": [
+          "package.json"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy"
+      },
+      {
+        "name": "React",
+        "confidence": 0.9,
+        "indicators": [
+          "package.json"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
+        "relativePath": "frontend"
       }
     ]
   },
@@ -92,6 +109,15 @@
         ],
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
         "relativePath": "backend"
+      },
+      {
+        "style": "rest",
+        "confidence": 0.8,
+        "indicators": [
+          "RESTful patterns (routes/controllers/openapi/etc.)"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy"
       },
       {
         "style": "rest",
@@ -114,6 +140,44 @@
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
         "relativePath": "backend",
         "confidence": 0.95
+      },
+      {
+        "runtime": "node",
+        "entryType": "script",
+        "command": "npm run start",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy",
+        "confidence": 0.95
+      }
+    ]
+  },
+  "DatabaseDetector": {
+    "success": true,
+    "data": [
+      {
+        "type": "postgres",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend",
+        "indicators": [
+          "pg/prisma"
+        ],
+        "confidence": 0.9
+      },
+      {
+        "type": "postgres",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy",
+        "indicators": [
+          "pg/prisma"
+        ],
+        "confidence": 0.9
+      },
+      {
+        "type": "unknown",
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
+        "relativePath": "frontend",
+        "indicators": [],
+        "confidence": 0.5
       }
     ]
   }

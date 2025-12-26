@@ -51,3 +51,14 @@ export interface EntryPointInfo {
   relativePath: string
   confidence: number
 }
+
+export type DatabaseType = "postgres" | "mysql" | "mongodb" | "redis" | "sqlite" | "dynamodb" | "unknown"
+
+export interface DatabaseInfo {
+  type: DatabaseType
+  version?: string
+  path: string          // absolute service path
+  relativePath: string  // from repo root
+  indicators: string[]
+  confidence: number
+}
