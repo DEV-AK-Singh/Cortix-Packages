@@ -19,4 +19,8 @@ router.get(
     getLatestAnalysis
 );
 
+router.get("/health", (_req, res) => {
+    res.status(200).send("Analysis Service is healthy");
+});
+
 export default router;

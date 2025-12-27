@@ -55,4 +55,4 @@ export async function getLatestAnalysis(req: AuthRequest, res: Response) {
         orderBy: { createdAt: "desc" },
     });
     res.json(job);
-}
+} 
