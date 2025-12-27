@@ -123,7 +123,7 @@ model AnalysisJob {
   id        String         @id @default(uuid())
   projectId String
   status    AnalysisStatus @default(PENDING)
-  result    Json?          // Stores the full CumulativeReport
+  result    Json? // Stores the full CumulativeReport
   error     String?
   startedAt DateTime?
   endedAt   DateTime?
@@ -135,15 +135,15 @@ model AnalysisJob {
 
 model AnalysisResult {
   id             String   @id @default(uuid())
-  projectId      String   @unique 
+  projectId      String   @unique
   avgHealthScore Float    @default(0)
-  languages      Json     @default("{}") 
-  mainFrameworks String[] 
-  services       Json     @default("[]") 
-  infrastructure Json     @default("{}") 
-  globalHealth   Json     @default("{}") 
+  languages      Json     @default("{}")
+  mainFrameworks String[]
+  services       Json     @default("[]")
+  infrastructure Json     @default("{}")
+  globalHealth   Json     @default("{}")
   version        String   @default("v2-cumulative")
-  updatedAt      DateTime @updatedAt @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
   createdAt      DateTime @default(now())
   project        Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 

@@ -115,12 +115,12 @@ export class AuthService {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
-      }).then(res => res.json()); 
+      }).then(res => res.json());
 
       allRepos = allRepos.concat(repos);
       if (repos.length < perPage) break;
       page++;
-    } 
+    }
 
     // const repos: any = await fetch("https://api.github.com/user/repos", {
     //   headers: {

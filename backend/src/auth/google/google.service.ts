@@ -1,6 +1,7 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { prisma } from "../../config/prisma";
+import crypto from "crypto";
 
 passport.use(
     new GoogleStrategy(
@@ -35,14 +36,14 @@ passport.use(
                     },
                     update: {
                         accessToken,
-                        refreshToken,
+                        refreshToken: crypto.randomBytes(64).toString("hex"),
                     },
                     create: {
                         userId: user.id,
                         provider: "GOOGLE",
                         providerAccountId: profile.id,
                         accessToken,
-                        refreshToken,
+                        refreshToken: crypto.randomBytes(64).toString("hex"),
                     },
                 });
 
