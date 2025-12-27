@@ -2,6 +2,8 @@
 node_modules 
 */prisma/migrations/
 generated/
+reports/
+tmp/
 logs
  
 dist

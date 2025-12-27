@@ -123,30 +123,29 @@ model AnalysisJob {
   id        String         @id @default(uuid())
   projectId String
   status    AnalysisStatus @default(PENDING)
-  result    Json?
+  result    Json?          // Stores the full CumulativeReport
   error     String?
   startedAt DateTime?
   endedAt   DateTime?
   createdAt DateTime       @default(now())
-  project   Project        @relation(fields: [projectId], references: [id])
+  project   Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([projectId])
 }
 
 model AnalysisResult {
-  id         String   @id @default(uuid())
-  projectId  String   @unique
-  type       String // fullstack | backend | frontend
-  languages  String[]
-  frameworks String[]
-  entry      Json // { build, start }
-  env        Json // { required[], optional[] }
-  services   String[]
-  docker     Json // { supported, strategy }
-  confidence Float
-  version    String // v1
-  createdAt  DateTime @default(now())
-  project    Project  @relation(fields: [projectId], references: [id])
+  id             String   @id @default(uuid())
+  projectId      String   @unique 
+  avgHealthScore Float    @default(0)
+  languages      Json     @default("{}") 
+  mainFrameworks String[] 
+  services       Json     @default("[]") 
+  infrastructure Json     @default("{}") 
+  globalHealth   Json     @default("{}") 
+  version        String   @default("v2-cumulative")
+  updatedAt      DateTime @updatedAt @default(now())
+  createdAt      DateTime @default(now())
+  project        Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([projectId])
 }

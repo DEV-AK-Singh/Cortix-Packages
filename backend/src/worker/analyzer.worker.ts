@@ -42,45 +42,46 @@ const worker = new Worker(
         });
 
         try {
-            const result = await runAnalysis({
-                repoUrl,
-                branch,
-                projectId,
+            const report = await runAnalysis({ repoUrl, branch, projectId });
+
+            // Helper to extract unique frameworks across all services
+            const frameworkSet = new Set<string>();
+
+            report?.services.forEach((s: any) => {
+                s.frameworks?.forEach((f: any) => {
+                    // Handle both object {name: 'React'} or string 'React'
+                    const name = typeof f === 'string' ? f : f.name;
+                    if (name) frameworkSet.add(name);
+                });
             });
 
             // 5. Store result (RAW for now)
             await prisma.analysisJob.update({
                 where: { id: analysisJobId },
                 data: {
-                    status: "COMPLETED",
-                    result: result,
+                    status: "COMPLETED", 
+                    result: JSON.parse(JSON.stringify(report)) as any,
                     endedAt: new Date(),
                 },
             });
             await prisma.analysisResult.upsert({
                 where: { projectId },
                 update: {
-                    type: result.type,
-                    languages: result.languages,
-                    frameworks: result.frameworks,
-                    entry: result.entry,
-                    env: result.env,
-                    services: result.services,
-                    docker: result.docker,
-                    confidence: result.confidence,
-                    version: result.version,
+                    avgHealthScore: report?.globalHealth.averageScore || 0,
+                    languages: report?.repository.languages || {},
+                    mainFrameworks: Array.from(frameworkSet),
+                    services: report?.services ? JSON.parse(JSON.stringify(report.services)) : {},
+                    infrastructure: report?.infrastructure || {},
+                    globalHealth: report?.globalHealth || {},
                 },
                 create: {
                     projectId,
-                    type: result.type,
-                    languages: result.languages,
-                    frameworks: result.frameworks,
-                    entry: result.entry,
-                    env: result.env,
-                    services: result.services,
-                    docker: result.docker,
-                    confidence: result.confidence,
-                    version: result.version,
+                    avgHealthScore: report?.globalHealth.averageScore || 0,
+                    languages: report?.repository.languages || {},
+                    mainFrameworks: Array.from(frameworkSet),
+                    services: report?.services ? JSON.parse(JSON.stringify(report.services)) : {},
+                    infrastructure: report?.infrastructure || {},
+                    globalHealth: report?.globalHealth || {},
                 },
             });
             await prisma.project.update({

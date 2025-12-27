@@ -118,7 +118,7 @@ export interface DeploymentInfo {
   path?: string
   relativePath?: string
   confidence: number
-}
+};
 
 export interface HealthInfo {
   hasReadme: boolean
@@ -131,4 +131,40 @@ export interface HealthInfo {
   score: number        // 0 → 100
   path?: string
   relativePath?: string
-}
+};
+
+export interface CumulativeReport {
+  timestamp: string;
+  projectId?: string;
+  repository: {
+    name?: string;
+    url?: string;
+    branch?: string;
+    path: string;
+    metadata?: any; // From RepoMetadataDetector
+    languages?: any; // From LanguageCompositionDetector
+  };
+  services: ServiceManifest[];
+  infrastructure: {
+    ciCd: any[];
+    deployment: any[];
+    containerization: any[];
+  };
+  globalHealth: {
+    averageScore: number;
+    issues: string[];
+  };
+};
+
+export interface ServiceManifest {
+  name: string;
+  path: string;
+  runtime: any;
+  frameworks: any[];
+  apiStyles: any[];
+  entryPoints: any[];
+  databases: any[];
+  envVars: { declared: any[]; used: any[] };
+  tooling: any;
+  health: any;
+};
