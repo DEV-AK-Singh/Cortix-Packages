@@ -3,7 +3,7 @@
     "success": true,
     "data": {
       "repoName": "Droppers-App",
-      "scanTimestamp": "Fri, 26 Dec 2025 23:27:57 GMT",
+      "scanTimestamp": "Sat, 27 Dec 2025 00:03:40 GMT",
       "totalFiles": 74,
       "directories": [
         "backend",
@@ -432,6 +432,15 @@
         "relativePath": "backend"
       },
       {
+        "compiler": "TypeScript",
+        "testFrameworks": [],
+        "indicators": [
+          "tsconfig.json"
+        ],
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy"
+      },
+      {
         "linter": "ESLint",
         "compiler": "Vite",
         "testFrameworks": [],
@@ -442,15 +451,6 @@
         ],
         "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
         "relativePath": "frontend"
-      },
-      {
-        "compiler": "TypeScript",
-        "testFrameworks": [],
-        "indicators": [
-          "tsconfig.json"
-        ],
-        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
-        "relativePath": "backend - Copy"
       }
     ]
   },
@@ -538,6 +538,45 @@
     "success": false,
     "warnings": [
       "No deployment configuration detected"
+    ]
+  },
+  "ProjectHealthDetector": {
+    "success": true,
+    "data": [
+      {
+        "hasReadme": false,
+        "hasLicense": false,
+        "hasTests": false,
+        "indicators": [
+          "has-lockfile"
+        ],
+        "score": 50,
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend",
+        "relativePath": "backend"
+      },
+      {
+        "hasReadme": false,
+        "hasLicense": false,
+        "hasTests": false,
+        "indicators": [
+          "has-lockfile"
+        ],
+        "score": 50,
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/backend - Copy",
+        "relativePath": "backend - Copy"
+      },
+      {
+        "hasReadme": true,
+        "hasLicense": false,
+        "hasTests": false,
+        "indicators": [
+          "has-readme",
+          "has-lockfile"
+        ],
+        "score": 65,
+        "path": "C:/Users/Abhishek/Desktop/Revise/Projects/Droppers-App/frontend",
+        "relativePath": "frontend"
+      }
     ]
   }
 }

@@ -120,3 +120,15 @@ export interface DeploymentInfo {
   confidence: number
 }
 
+export interface HealthInfo {
+  hasReadme: boolean
+  hasLicense: boolean | string
+  hasTests: boolean
+  testIndicators?: string[]
+  outdatedDependencies?: number
+  securityVulnerabilities?: number
+  indicators: string[]
+  score: number        // 0 → 100
+  path?: string
+  relativePath?: string
+}

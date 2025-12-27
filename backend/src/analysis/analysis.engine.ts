@@ -1,12 +1,4 @@
-import { cloneRepo } from "./clone/git.service";
-import { detectPackageManager } from "./detectors/package.detector";
-import { detectLanguages } from "./detectors/languages.detector";
-import { detectFrameworks } from "./detectors/framework.detector";
-import { detectEntry } from "./detectors/entry.detector";
-import { detectEnv } from "./detectors/env.detector";
-import { detectServices } from "./detectors/service.detector";
-import { calculateConfidence } from "./confidence/confidence";
-import { detectDocker } from "./detectors/docker.detector";
+import { cloneRepo } from "./clone/git.service"; 
 import { safeReadJSON } from "../utils/fs-safe";
 
 export async function runAnalysis({

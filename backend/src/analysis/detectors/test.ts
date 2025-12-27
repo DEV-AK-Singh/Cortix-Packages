@@ -25,6 +25,7 @@ import { ToolingDetector } from "./tooling.detector";
 import { ContainerizationDetector } from "./containerization.detector";
 import { CICDDetector } from "./cicd.detector";
 import { DeploymentDetector } from "./deployment.detector";
+import { HealthDetector } from "./health.detector";
 
 const TEST_REPO_PATH = "C:\\Users\\Abhishek\\Desktop\\Revise\\Projects\\Droppers-App"
 
@@ -78,6 +79,10 @@ const runTests = async () => {
     console.log("Running DeploymentPlatformDetector tests...");
     const deploymentPlatformResult = await DeploymentDetector.detect(TEST_REPO_PATH);
     finalResult["DeploymentPlatformDetector"] = deploymentPlatformResult;
+
+    console.log("Running ProjectHealthDetector tests...");
+    const projectHealthResult = await HealthDetector.detect(TEST_REPO_PATH);
+    finalResult["ProjectHealthDetector"] = projectHealthResult;
 
     await fs.promises.writeFile("testResults.json", JSON.stringify(finalResult, null, 2)); 
     console.log("All tests completed. Writing results to testResults.json");
