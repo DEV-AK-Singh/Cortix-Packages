@@ -12,6 +12,7 @@ import "./auth/google/google.service";
 import userRoutes from "./auth/user/user.routes";
 import projectRoutes from "./projects/project.routes";
 import analysisRoutes from "./analysis/analysis.routes";
+import infraPlannerRoutes from "./infra/planner/planner.routes";
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use("/auth/user", userRoutes);
 
 app.use("/api/projects", projectRoutes); 
 app.use("/api/analyze", analysisRoutes);
+app.use("/api/infra-plan", infraPlannerRoutes)
 
 app.get("/health", async (_req, res) => {
     let dbStatus = "unhealthy";
