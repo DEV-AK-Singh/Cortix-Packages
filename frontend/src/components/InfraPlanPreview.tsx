@@ -11,12 +11,12 @@ export function InfraPlanPreview({ plan }: { plan: any }) {
           <Box className="text-blue-500" /> Infrastructure Plan
         </h2>
         <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold border border-blue-100">
-          {plan.deploymentStrategy.replace("_", " ")}
+          {plan.deploymentStrategy?.replace("_", " ")}
         </span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {plan.services.map((service: any, idx: number) => (
+        {plan.services?.map((service: any, idx: number) => (
           <div key={idx} className="border rounded-xl p-5 bg-white shadow-sm relative overflow-hidden">
             {/* Visual Indicator for Strategy */}
             <div className="absolute top-0 right-0 p-2 opacity-10">
@@ -62,7 +62,7 @@ export function InfraPlanPreview({ plan }: { plan: any }) {
           <p className="font-bold">Edge Gateway (Nginx)</p>
           <p className="text-gray-400">
             Routing traffic through port <span className="text-green-400 font-mono">80</span> to 
-            internal domain <span className="text-green-400 font-mono">{plan.network.internalDomain}</span>
+            internal domain <span className="text-green-400 font-mono">{plan.network?.internalDomain}</span>
           </p>
         </div>
       </div>

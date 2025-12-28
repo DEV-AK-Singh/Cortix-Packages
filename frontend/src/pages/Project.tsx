@@ -4,6 +4,7 @@ import { Rocket, Shield, HardDrive, Search, Terminal } from "lucide-react";
 import ProgressItem from "../components/ProgressItem";
 import { AnalysisReport } from "../components/AnalysisReport";
 import { InfraPlanPreview } from "../components/InfraPlanPreview";
+import { InfraGenPreview } from "../components/InfraGenPreview";
 
 const API_URL = "http://localhost:5000";
 
@@ -298,6 +299,36 @@ export function Project() {
                 Plan
               </span>
             </div>
+            <div className="w-4 h-px bg-gray-200" />
+            <div className="flex items-center gap-2">
+              <div
+                className={`w-2 h-2 rounded-full ${
+                  getPillarStatus("infra-gen") === "done"
+                    ? "bg-green-500"
+                    : getPillarStatus("infra-gen") === "active"
+                    ? "bg-blue-500 animate-pulse"
+                    : "bg-gray-200"
+                }`}
+              />
+              <span className="text-[10px] font-bold uppercase tracking-tighter text-gray-400">
+                Gen
+              </span>
+            </div>
+            <div className="w-4 h-px bg-gray-200" />
+            <div className="flex items-center gap-2">
+              <div
+                className={`w-2 h-2 rounded-full ${
+                  getPillarStatus("deploy") === "done"
+                    ? "bg-green-500"
+                    : getPillarStatus("deploy") === "active"
+                    ? "bg-blue-500 animate-pulse"
+                    : "bg-gray-200"
+                }`}
+              />
+              <span className="text-[10px] font-bold uppercase tracking-tighter text-gray-400">
+                Deploy
+              </span>
+            </div>
           </div>
         </div>
       </header>
@@ -311,7 +342,7 @@ export function Project() {
               Deployment Lifecycle
             </h2>
           </div>
-          <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="p-6 grid grid-cols-1 md:grid-cols-4 gap-8">
             <ProgressItem
               label="Source Analysis"
               status={getPillarStatus("analysis")}
@@ -322,12 +353,21 @@ export function Project() {
               }
             />
             <ProgressItem
-              label="Infra Strategy"
+              label="Infra Planning"
               status={getPillarStatus("infra-plan")}
               subtext={
                 stage === "INFRA_PLANNING"
                   ? "Optimizing resources..."
                   : "Plan generated"
+              }
+            />
+            <ProgressItem
+              label="Infra Generation"
+              status={getPillarStatus("infra-gen")}
+              subtext={
+                stage === "INFRA_GENERATING"
+                  ? "Optimizing resources..."
+                  : "Files generated"
               }
             />
             <ProgressItem
@@ -354,7 +394,11 @@ export function Project() {
           )}
 
           {/* Planning View */}
-          {(stage === "INFRA_PLANNING_DONE" ||
+          {(stage === "INFRA_PLANNING_DONE" || 
+            stage === "INFRA_GENERATING_QUEUED" ||
+            stage === "INFRA_GENERATING" ||
+            stage === "INFRA_GENERATING_DONE" ||
+            stage === "DEPLOYING_QUEUED" ||
             stage === "DEPLOYING" ||
             stage === "DEPLOYING_DONE") && (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -365,6 +409,22 @@ export function Project() {
                 </h3>
               </div>
               <InfraPlanPreview plan={plan} />
+            </div>
+          )}
+
+          {/* Generation View */}
+          {(stage === "INFRA_GENERATING_DONE" ||
+            stage === "DEPLOYING_QUEUED" ||
+            stage === "DEPLOYING" ||
+            stage === "DEPLOYING_DONE") && (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <div className="flex items-center gap-2 mb-4">
+                <HardDrive size={18} className="text-purple-500" />
+                <h3 className="font-bold text-lg text-gray-800">
+                  Infrastructure Generation
+                </h3>
+              </div>
+              <InfraGenPreview gen={gen} />
             </div>
           )}
 
@@ -408,10 +468,19 @@ export function Project() {
                 className="btn-primary flex items-center gap-2"
               >
                 <HardDrive size={18} />
-                Generate Infrastructure Plan
+                Plan Infrastructure
               </button>
             )}
             {stage === "INFRA_PLANNING_DONE" && (
+              <button
+                onClick={genInfra}
+                className="btn-success flex items-center gap-2"
+              >
+                <Rocket size={18} />
+                Generate Infrastructure
+              </button>
+            )}
+            {stage === "INFRA_GENERATING_DONE" && (
               <button
                 onClick={deployInfra}
                 className="btn-success flex items-center gap-2"

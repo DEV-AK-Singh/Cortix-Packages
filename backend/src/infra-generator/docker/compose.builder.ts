@@ -1,36 +1,51 @@
 export function buildDockerCompose(plan: any): string {
-    const services: Record<string, any> = {}
+  if (!plan || !plan.services || !Array.isArray(plan.services)) {
+    throw new Error("Invalid Deployment Plan: No services found.");
+  }
 
-    for (const service of plan.services) {
-        services[service.name] = {
-            build: {
-                context: ".",
-                dockerfile: `${service.name}.Dockerfile`,
-            },
-            ports: service.proxy?.enabled
-                ? [`${service.run.port}:${service.run.port}`]
-                : [],
-            environment: service.run.envVars || [],
+  const serviceEntries = plan.services.map((service: any) => {
+    const name = (service.name || `service-${Math.random().toString(36).substring(7)}`)
+      .replace(/\s+/g, '-')
+      .toLowerCase();
+    
+    const port = service.run?.port || 3000;
+    const path = service.path || ".";
+
+    // 1. Process Environment Variables first to check if we need the scope
+    const envList = service.run?.envVars || [];
+    const validEnvs = envList
+      .map((e: any) => {
+        if (typeof e === 'string' && e.includes('=')) return `      - ${e}`;
+        if (e && e.name) {
+          return `      - ${e.name}=${e.value ?? ""}`;
         }
-    }
+        return null;
+      })
+      .filter(Boolean);
 
+    // 2. Build the environment string only if envs exist
+    const environmentBlock = validEnvs.length > 0 
+      ? `    environment:\n${validEnvs.join("\n")}` 
+      : "";
+
+    // 3. Construct the service block, filtering out the empty environment string
     return `
-version: "3.9"
-
-services:
-${Object.entries(services)
-            .map(
-                ([name, cfg]) => `
   ${name}:
     build:
-      context: ${cfg.build.context}
-      dockerfile: ${cfg.build.dockerfile}
+      context: .
+      dockerfile: ./${path}/Dockerfile.cortix
     ports:
-${cfg.ports.map((p: string) => `      - "${p}"`).join("\n")}
-    environment:
-${cfg.environment.map((e: string) => `      - ${e}`).join("\n")}
-`
-            )
-            .join("\n")}
-`.trim()
+      - "${port}:${port}"${environmentBlock ? `\n${environmentBlock}` : ""}
+    restart: always`;
+  }).join("\n");
+
+  return `version: "3.9"
+
+services:
+${serviceEntries}
+
+networks:
+  default:
+    name: cortix-network
+`.trim();
 }

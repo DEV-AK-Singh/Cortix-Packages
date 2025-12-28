@@ -1,7 +1,7 @@
 import fs from "fs/promises"
 import path from "path"
 import { prisma } from "../config/prisma"
-import { buildDockerfile } from "./docker/dockerfile.builder" 
+import { buildDockerfile } from "./docker/dockerfile.builder"
 import { buildDockerCompose } from "./docker/compose.builder"
 
 export async function generateInfrastructure(projectId: string) {
@@ -9,16 +9,17 @@ export async function generateInfrastructure(projectId: string) {
         where: { projectId },
     })
 
-    if (!plan) {
+    const project = await prisma.project.findUnique({
+        where: { id: projectId },
+    })
+
+    if (!project || !plan) {
         throw new Error("No infrastructure plan found")
     }
 
-    const outputDir = path.join(
-        process.cwd(),
-        "generated",
-        "infra",
-        projectId
-    )
+    const branch = project.defaultBranch;
+
+    const outputDir = path.join(process.cwd(), "repos", `repo-${projectId}-${branch}`, "infra");
 
     await fs.mkdir(outputDir, { recursive: true })
 
