@@ -16,8 +16,7 @@ export async function runAnalysis({
     branch,
     projectId,
 }: AnalysisParams): Promise<CumulativeReport | null> {
-    const tempDir = path.join(os.tmpdir(), `analysis-${projectId}-${Date.now()}`);
-    // Sanitize branch name for filename (remove slashes/special characters)
+    const tempDir = path.join(os.tmpdir(), `analysis-${projectId}-${Date.now()}`); 
     const safeBranch = branch.replace(/[^a-z0-9]/gi, "-");
     const reportPath = path.join(process.cwd(), "reports", `${projectId}-${safeBranch}.json`);
 

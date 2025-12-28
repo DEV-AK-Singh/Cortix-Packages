@@ -133,6 +133,19 @@ export interface HealthInfo {
   relativePath?: string
 };
 
+export interface ServiceManifest {
+  name: string;
+  path: string;
+  runtime: any;
+  frameworks: any[];
+  apiStyles: any[];
+  entryPoints: any[];
+  databases: any[];
+  envVars: { declared: any[]; used: any[] };
+  tooling: any;
+  health: any;
+};
+
 export interface CumulativeReport {
   timestamp: string;
   projectId?: string;
@@ -154,17 +167,4 @@ export interface CumulativeReport {
     averageScore: number;
     issues: string[];
   };
-};
-
-export interface ServiceManifest {
-  name: string;
-  path: string;
-  runtime: any;
-  frameworks: any[];
-  apiStyles: any[];
-  entryPoints: any[];
-  databases: any[];
-  envVars: { declared: any[]; used: any[] };
-  tooling: any;
-  health: any;
 };

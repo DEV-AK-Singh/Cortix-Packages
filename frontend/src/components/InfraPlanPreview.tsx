@@ -1,6 +1,7 @@
 import { Box, Network, Cpu, ArrowRight } from "lucide-react";
 
 export function InfraPlanPreview({ plan }: { plan: any }) {
+
   if (!plan) return null;
 
   return (

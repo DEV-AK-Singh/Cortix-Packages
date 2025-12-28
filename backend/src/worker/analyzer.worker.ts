@@ -1,9 +1,8 @@
 import { Worker } from "bullmq";
 import { redis } from "../config/redis";
-import { ANALYSIS_QUEUE_NAME } from "../queue/analysis.queue";
-import { prisma } from "../config/prisma";
-import { githubClient } from "../lib/github";
-import { runAnalysis } from "../analysis/analysis.engine";
+import { ANALYSIS_QUEUE_NAME } from "../queue/analysis/analysis.queue";
+import { prisma } from "../config/prisma"; 
+import { runAnalysis } from "../analysis/analysis.service";
 
 const worker = new Worker(
     ANALYSIS_QUEUE_NAME,

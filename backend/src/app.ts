@@ -12,7 +12,7 @@ import "./auth/google/google.service";
 import userRoutes from "./auth/user/user.routes";
 import projectRoutes from "./projects/project.routes";
 import analysisRoutes from "./analysis/analysis.routes";
-import infraPlannerRoutes from "./infra/planner/planner.routes";
+import infraPlannerRoutes from "./infra-planner/planner.routes";
 
 const app = express();
 

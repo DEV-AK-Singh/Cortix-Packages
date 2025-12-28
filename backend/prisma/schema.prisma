@@ -81,14 +81,15 @@ enum ProjectStage {
   ANALYSIS_QUEUED
   ANALYZING
   ANALYSIS_DONE
+  INFRA_PLANNING_QUEUED
   INFRA_PLANNING
-  INFRA_PLANNED
-  INFRA_QUEUED
+  INFRA_PLANNING_DONE
+  INFRA_GENERATING_QUEUED
   INFRA_GENERATING
-  INFRA_DONE
-  DEPLOY_QUEUED
+  INFRA_GENERATING_DONE
+  DEPLOYING_QUEUED
   DEPLOYING
-  DEPLOYED
+  DEPLOYING_DONE 
   FAILED
 }
 
@@ -108,9 +109,11 @@ model Project {
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   user            User             @relation(fields: [userId], references: [id])
+  
   analysisJobs    AnalysisJob[]
   analysisResults AnalysisResult[]
-  infrastructurePlan InfrastructurePlan?
+  infrastructureJobs InfrastructurePlanJob[]
+  infrastructurePlan InfrastructurePlanResult[]
 
   @@unique([repoProvider, repoId, defaultBranch])
 }
@@ -153,7 +156,28 @@ model AnalysisResult {
   @@index([projectId])
 }
 
-model InfrastructurePlan {
+enum InfrastructurePlanStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+model InfrastructurePlanJob {
+  id        String         @id @default(uuid())
+  projectId String
+  status    InfrastructurePlanStatus @default(PENDING)
+  result    Json? // Stores the full InfrastructurePlan
+  error     String?
+  startedAt DateTime?
+  endedAt   DateTime?
+  createdAt DateTime       @default(now())
+  project   Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+}
+
+model InfrastructurePlanResult {
   id                 String           @id @default(uuid())
   projectId          String           @unique
   deploymentStrategy String           // DOCKER_SINGLE | DOCKER_COMPOSE

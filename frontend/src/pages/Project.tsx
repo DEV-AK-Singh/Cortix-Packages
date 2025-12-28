@@ -1,12 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { 
-  Rocket,
-  Shield,
-  HardDrive,
-  Search,
-  Terminal,
-} from "lucide-react";
+import { Rocket, Shield, HardDrive, Search, Terminal } from "lucide-react";
 import ProgressItem from "../components/ProgressItem";
 import { AnalysisReport } from "../components/AnalysisReport";
 import { InfraPlanPreview } from "../components/InfraPlanPreview";
@@ -15,17 +9,18 @@ const API_URL = "http://localhost:5000";
 
 type Stage =
   | "CREATED"
-  | "ANALYSIS_PENDING"
+  | "ANALYSIS_QUEUED"
   | "ANALYZING"
   | "ANALYSIS_DONE"
+  | "INFRA_PLANNING_QUEUED"
   | "INFRA_PLANNING"
-  | "INFRA_PLANNED"
-  | "INFRA_QUEUED"
+  | "INFRA_PLANNING_DONE"
+  | "INFRA_GENERATING_QUEUED"
   | "INFRA_GENERATING"
-  | "INFRA_GENERATED"
-  | "DEPLOY_QUEUED"
+  | "INFRA_GENERATING_DONE"
+  | "DEPLOYING_QUEUED"
   | "DEPLOYING"
-  | "DEPLOYED"
+  | "DEPLOYING_DONE"
   | "FAILED";
 
 export function Project() {
@@ -56,25 +51,14 @@ export function Project() {
       if (data.stage === "ANALYSIS_DONE") {
         stopPolling();
         fetchAnalysisReport();
+      } else if (data.stage === "INFRA_PLANNING_DONE") {
+        stopPolling();
+        fetchInfraPlan();
       } else if (data.stage === "FAILED") {
         stopPolling();
       }
     } catch (err) {
       console.error("Fetch error:", err);
-    }
-  };
-
-  // 2. Fetch the Cumulative Report Data
-  const fetchAnalysisReport = async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/analyze/projects/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      console.log(data);
-      setReport(data);
-    } catch (err) {
-      console.error("Report fetch error:", err);
     }
   };
 
@@ -90,6 +74,19 @@ export function Project() {
     }
   };
 
+  const fetchAnalysisReport = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/analyze/projects/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      console.log(data);
+      setReport(data);
+    } catch (err) {
+      console.error("Report fetch error:", err);
+    }
+  };
+
   async function runAnalysis() {
     setStage("ANALYZING");
     await fetch(`${API_URL}/api/analyze/projects/${id}`, {
@@ -99,31 +96,36 @@ export function Project() {
     startPolling();
   }
 
-  async function planInfra() {
-    setLoading(true);
-    setStage("INFRA_PLANNING");
+  const fetchInfraPlan = async () => {
     try {
       const res = await fetch(`${API_URL}/api/infra-plan/projects/${id}/plan`, {
-        method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      setPlan(data.plan);
-      setStage("INFRA_PLANNED"); // Update based on your ProjectStage enum
+      console.log(data);
+      setPlan(data.result);
     } catch (err) {
-      setStage("FAILED");
-      console.error("Planning failed", err);
-    } finally {
-      setLoading(false);
+      console.error("Plan fetch error:", err);
     }
+  };
+
+  async function planInfra() {
+    setStage("INFRA_PLANNING");
+    await fetch(`${API_URL}/api/infra-plan/projects/${id}/plan`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    startPolling();
   }
 
   async function deployInfra() {
+    setStage("DEPLOYING_QUEUED");
     setLoading(true);
-    setStage("DEPLOYING");
     try {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-      setStage("DEPLOYED"); // Update based on your ProjectStage enum
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setStage("DEPLOYING");
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setStage("DEPLOYING_DONE");
     } catch (err) {
       setStage("FAILED");
       console.error("Deployment failed", err);
@@ -137,10 +139,12 @@ export function Project() {
       if (
         [
           "ANALYSIS_DONE",
+          "INFRA_PLANNING_QUEUED",
           "INFRA_PLANNING",
-          "INFRA_PLANNED",
+          "INFRA_PLANNING_DONE",
+          "DEPLOYING_QUEUED",
           "DEPLOYING",
-          "DEPLOYED",
+          "DEPLOYED_DONE",
         ].includes(stage)
       )
         return "done";
@@ -149,21 +153,30 @@ export function Project() {
       return "pending";
     }
     if (pillar === "infra") {
-      if (["INFRA_PLANNED", "DEPLOYING", "DEPLOYED"].includes(stage))
+      if (
+        [
+          "INFRA_PLANNING_DONE",
+          "DEPLOYING_QUEUED",
+          "DEPLOYING",
+          "DEPLOYED_DONE",
+        ].includes(stage)
+      )
         return "done";
       if (stage === "INFRA_PLANNING") return "active";
+      if (stage === "FAILED") return "failed";
       return "pending";
     }
     if (pillar === "deploy") {
-      if (stage === "DEPLOYED") return "done";
+      if (["DEPLOYED_DONE"].includes(stage)) return "done";
       if (stage === "DEPLOYING") return "active";
+      if (stage === "FAILED") return "failed";
       return "pending";
     }
     return "pending";
   };
 
   useEffect(() => {
-    if (stage === "INFRA_PLANNED" || stage === "DEPLOYED") {
+    if (stage === "INFRA_PLANNING_DONE" || stage === "DEPLOYING_DONE") {
       fetch(`${API_URL}/api/infra-plan/projects/${id}/plan`, {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -283,9 +296,9 @@ export function Project() {
           )}
 
           {/* Planning View */}
-          {(stage === "INFRA_PLANNED" ||
+          {(stage === "INFRA_PLANNING_DONE" ||
             stage === "DEPLOYING" ||
-            stage === "DEPLOYED") && (
+            stage === "DEPLOYING_DONE") && (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
               <div className="flex items-center gap-2 mb-4">
                 <HardDrive size={18} className="text-purple-500" />
@@ -317,11 +330,11 @@ export function Project() {
           <div className="flex items-center gap-2">
             <div
               className={`w-2 h-2 rounded-full bg-green-500 ${
-                stage === "DEPLOYED" ? "" : "animate-pulse"
+                stage === "DEPLOYING_DONE" ? "" : "animate-pulse"
               }`}
             />
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">
-              Stage: {stage.replace("_", " ")}
+            <span className="text-xs font-bold text-gray-900 uppercase tracking-widest">
+              Stage: {stage.replaceAll("_", " ")}
             </span>
           </div>
 
@@ -340,7 +353,7 @@ export function Project() {
                 Generate Infrastructure Plan
               </button>
             )}
-            {stage === "INFRA_PLANNED" && (
+            {stage === "INFRA_PLANNING_DONE" && (
               <button
                 onClick={deployInfra}
                 className="btn-success flex items-center gap-2"

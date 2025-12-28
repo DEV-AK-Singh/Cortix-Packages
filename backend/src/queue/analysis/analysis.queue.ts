@@ -1,5 +1,5 @@
 import { Queue } from "bullmq";
-import { redis } from "../config/redis";
+import { redis } from "../../config/redis";
 
 export const ANALYSIS_QUEUE_NAME = "analysis-queue";
 
