@@ -3,3 +3,4 @@ dotenv.config();
 
 import "./analyzer.worker"; 
 import "./planner.worker";
+import "./generator.worker";

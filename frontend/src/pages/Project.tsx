@@ -30,6 +30,7 @@ export function Project() {
   const [loading, setLoading] = useState(true);
   const [stage, setStage] = useState<Stage>("CREATED");
   const [plan, setPlan] = useState<any>(null);
+  const [gen, setGen] = useState<any>(null);
 
   const pollInterval = useRef<number | null>(null);
   const token = localStorage.getItem("token")!;
@@ -54,6 +55,9 @@ export function Project() {
       } else if (data.stage === "INFRA_PLANNING_DONE") {
         stopPolling();
         fetchInfraPlan();
+      } else if (data.stage === "INFRA_GENERATING_DONE") {
+        stopPolling();
+        fetchInfraGen();
       } else if (data.stage === "FAILED") {
         stopPolling();
       }
@@ -118,6 +122,28 @@ export function Project() {
     startPolling();
   }
 
+  const fetchInfraGen = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/infra-gen/projects/${id}/gen`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      console.log(data);
+      setPlan(data.result);
+    } catch (err) {
+      console.error("Gen fetch error:", err);
+    }
+  };
+
+  async function genInfra() {
+    setStage("INFRA_GENERATING");
+    await fetch(`${API_URL}/api/infra-gen/projects/${id}/gen`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    startPolling();
+  }
+
   async function deployInfra() {
     setStage("DEPLOYING_QUEUED");
     setLoading(true);
@@ -134,7 +160,9 @@ export function Project() {
     }
   }
 
-  const getPillarStatus = (pillar: "analysis" | "infra" | "deploy") => {
+  const getPillarStatus = (
+    pillar: "analysis" | "infra-plan" | "infra-gen" | "deploy"
+  ) => {
     if (pillar === "analysis") {
       if (
         [
@@ -142,6 +170,9 @@ export function Project() {
           "INFRA_PLANNING_QUEUED",
           "INFRA_PLANNING",
           "INFRA_PLANNING_DONE",
+          "INFRA_GENERATING_QUEUED",
+          "INFRA_GENERATING",
+          "INFRA_GENERATING_DONE",
           "DEPLOYING_QUEUED",
           "DEPLOYING",
           "DEPLOYED_DONE",
@@ -152,10 +183,13 @@ export function Project() {
       if (stage === "FAILED") return "failed";
       return "pending";
     }
-    if (pillar === "infra") {
+    if (pillar === "infra-plan") {
       if (
         [
           "INFRA_PLANNING_DONE",
+          "INFRA_GENERATING_QUEUED",
+          "INFRA_GENERATING",
+          "INFRA_GENERATING_DONE",
           "DEPLOYING_QUEUED",
           "DEPLOYING",
           "DEPLOYED_DONE",
@@ -163,6 +197,20 @@ export function Project() {
       )
         return "done";
       if (stage === "INFRA_PLANNING") return "active";
+      if (stage === "FAILED") return "failed";
+      return "pending";
+    }
+    if (pillar === "infra-gen") {
+      if (
+        [
+          "INFRA_GENERATING_DONE",
+          "DEPLOYING_QUEUED",
+          "DEPLOYING",
+          "DEPLOYED_DONE",
+        ].includes(stage)
+      )
+        return "done";
+      if (stage === "INFRA_GENERATING") return "active";
       if (stage === "FAILED") return "failed";
       return "pending";
     }
@@ -176,12 +224,22 @@ export function Project() {
   };
 
   useEffect(() => {
-    if (stage === "INFRA_PLANNING_DONE" || stage === "DEPLOYING_DONE") {
+    if (
+      stage === "INFRA_PLANNING_DONE" ||
+      stage === "INFRA_GENERATING_DONE" ||
+      stage === "DEPLOYING_DONE"
+    ) {
       fetch(`${API_URL}/api/infra-plan/projects/${id}/plan`, {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((res) => res.json())
         .then((data) => setPlan(data));
+
+      fetch(`${API_URL}/api/infra-gen/projects/${id}/gen`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => res.json())
+        .then((data) => setGen(data));
     }
   }, [stage, id]);
 
@@ -229,9 +287,9 @@ export function Project() {
             <div className="flex items-center gap-2">
               <div
                 className={`w-2 h-2 rounded-full ${
-                  getPillarStatus("infra") === "done"
+                  getPillarStatus("infra-plan") === "done"
                     ? "bg-green-500"
-                    : getPillarStatus("infra") === "active"
+                    : getPillarStatus("infra-plan") === "active"
                     ? "bg-blue-500 animate-pulse"
                     : "bg-gray-200"
                 }`}
@@ -265,7 +323,7 @@ export function Project() {
             />
             <ProgressItem
               label="Infra Strategy"
-              status={getPillarStatus("infra")}
+              status={getPillarStatus("infra-plan")}
               subtext={
                 stage === "INFRA_PLANNING"
                   ? "Optimizing resources..."

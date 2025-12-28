@@ -2,8 +2,7 @@ import { ProjectAnalyzer } from "./detectors/analyzer";
 import { CumulativeReport } from "./detectors/types";
 import { execSync } from "child_process";
 import fs from "fs/promises";
-import path from "path";
-import os from "os";
+import path from "path"; 
 
 interface AnalysisParams {
     repoUrl: string;
@@ -16,7 +15,7 @@ export async function runAnalysis({
     branch,
     projectId,
 }: AnalysisParams): Promise<CumulativeReport | null> {
-    const tempDir = path.join(os.tmpdir(), `analysis-${projectId}-${Date.now()}`); 
+    const repoDir = path.join(process.cwd(), "repos", `repo-${projectId}-${branch}`); 
     const safeBranch = branch.replace(/[^a-z0-9]/gi, "-");
     const reportPath = path.join(process.cwd(), "reports", `${projectId}-${safeBranch}.json`);
 
@@ -27,12 +26,12 @@ export async function runAnalysis({
 
         // 1. Clone
         execSync(
-            `git clone --branch ${branch} --depth 1 ${repoUrl} ${tempDir}`,
+            `git clone --branch ${branch} --depth 1 ${repoUrl} ${repoDir}`,
             { stdio: "ignore" }
         );
 
         // 2. Analyze
-        const report = await ProjectAnalyzer.analyze(tempDir);
+        const report = await ProjectAnalyzer.analyze(repoDir);
 
         // 3. Construct Final Object
         finalReport = {
@@ -56,12 +55,13 @@ export async function runAnalysis({
         console.error(`[${projectId}] ❌ Analysis failed:`, error.message);
         return null;
     } finally {
+        console.log(`[${projectId}] 🧹 Cleaning up...`);
         // 5. Cleanup temporary files
-        try {
-            await fs.rm(tempDir, { recursive: true, force: true });
-            console.log(`[${projectId}] 🧹 Cleaned up temporary files.`);
-        } catch (cleanupError) {
-            console.error(`[${projectId}] Cleanup failed`, cleanupError);
-        }
+        // try {
+        //     await fs.rm(repoDir, { recursive: true, force: true });
+        //     console.log(`[${projectId}] 🧹 Cleaned up temporary files.`);
+        // } catch (cleanupError) {
+        //     console.error(`[${projectId}] Cleanup failed`, cleanupError);
+        // }
     }
 }

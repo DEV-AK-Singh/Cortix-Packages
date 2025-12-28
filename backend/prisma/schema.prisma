@@ -89,31 +89,33 @@ enum ProjectStage {
   INFRA_GENERATING_DONE
   DEPLOYING_QUEUED
   DEPLOYING
-  DEPLOYING_DONE 
+  DEPLOYING_DONE
   FAILED
 }
 
 model Project {
-  id              String           @id @default(uuid())
-  userId          String
-  name            String
-  description     String?
-  repoProvider    RepoProvider
-  repoOwner       String
-  repoName        String
-  repoId          String
-  defaultBranch   String
-  stage           ProjectStage     @default(CREATED)
-  status          ProjectStatus    @default(ACTIVE)
-  branches        Branch[]
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  user            User             @relation(fields: [userId], references: [id])
-  
-  analysisJobs    AnalysisJob[]
-  analysisResults AnalysisResult[]
-  infrastructureJobs InfrastructurePlanJob[]
-  infrastructurePlan InfrastructurePlanResult[]
+  id            String        @id @default(uuid())
+  userId        String
+  name          String
+  description   String?
+  repoProvider  RepoProvider
+  repoOwner     String
+  repoName      String
+  repoId        String
+  defaultBranch String
+  stage         ProjectStage  @default(CREATED)
+  status        ProjectStatus @default(ACTIVE)
+  branches      Branch[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  user          User          @relation(fields: [userId], references: [id])
+
+  analysisJobs       AnalysisJob[]
+  analysisResults    AnalysisResult[]
+  infrastructurePlanJobs InfrastructurePlanJob[]
+  infrastructurePlanResult InfrastructurePlanResult[]
+  infrastructureGenJobs  InfrastructureGenJob[]
+  infrastructureGenResult InfrastructureGenResult[]
 
   @@unique([repoProvider, repoId, defaultBranch])
 }
@@ -164,29 +166,64 @@ enum InfrastructurePlanStatus {
 }
 
 model InfrastructurePlanJob {
-  id        String         @id @default(uuid())
+  id        String                   @id @default(uuid())
   projectId String
   status    InfrastructurePlanStatus @default(PENDING)
   result    Json? // Stores the full InfrastructurePlan
   error     String?
   startedAt DateTime?
   endedAt   DateTime?
-  createdAt DateTime       @default(now())
-  project   Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt DateTime                 @default(now())
+  project   Project                  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([projectId])
 }
 
 model InfrastructurePlanResult {
-  id                 String           @id @default(uuid())
-  projectId          String           @unique
-  deploymentStrategy String           // DOCKER_SINGLE | DOCKER_COMPOSE
-  services           Json             // Array of ServicePlan objects
-  network            Json             // internalDomain, exposedPorts
-  version            String           @default("1.0")
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @updatedAt
-  project            Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  id                 String   @id @default(uuid())
+  projectId          String   @unique
+  deploymentStrategy String // DOCKER_SINGLE | DOCKER_COMPOSE
+  services           Json // Array of ServicePlan objects
+  network            Json // internalDomain, exposedPorts
+  version            String   @default("1.0")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  project            Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([projectId])
+}
+
+enum InfrastructureGenStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+model InfrastructureGenJob {
+  id         String               @id @default(uuid())
+  projectId  String
+  status     InfrastructureGenStatus @default(PENDING)
+  error      String?
+  outputPath String?
+  startedAt  DateTime?
+  endedAt    DateTime?
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+}
+
+model InfrastructureGenResult {
+  id          String   @id @default(uuid())
+  projectId   String   @unique
+  files       Json     // [{ path, type }]
+  compose     Json?
+  version     String   @default("v1")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
