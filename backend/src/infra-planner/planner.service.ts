@@ -45,7 +45,7 @@ export async function planInfrastructure(projectId: string) {
 function detectPort(service: any): number {
     const framework = service.frameworks?.[0]?.name?.toLowerCase();
     if (framework === "next.js") return 3000;
-    if (framework === "react" || framework === "vite") return 5173;
+    if (framework === "react" || framework === "vite" || framework === "vue" || framework === "svelte" || framework === "angular" || framework === "sveltekit") return 80;
     if (framework === "express") return 5000;
     return 3000;
 } 

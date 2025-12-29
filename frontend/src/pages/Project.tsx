@@ -1,10 +1,18 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { Rocket, Shield, HardDrive, Search, Terminal } from "lucide-react";
+import {
+  Rocket,
+  Shield,
+  HardDrive,
+  Search,
+  Terminal,
+  Globe,
+} from "lucide-react";
 import ProgressItem from "../components/ProgressItem";
 import { AnalysisReport } from "../components/AnalysisReport";
 import { InfraPlanPreview } from "../components/InfraPlanPreview";
 import { InfraGenPreview } from "../components/InfraGenPreview";
+import { DeployPreview } from "../components/DeployPreview";
 
 const API_URL = "http://localhost:5000";
 
@@ -24,6 +32,23 @@ type Stage =
   | "DEPLOYING_DONE"
   | "FAILED";
 
+// 1. Define the Shape based on your Prisma Model
+interface ServiceInfo {
+  name: string;
+  containerId: string;
+  port: number;
+  url: string;
+  status: "running" | "stopped" | "failed";
+}
+
+interface DeploymentResult {
+  id: string;
+  provider: string; // "LOCAL_DOCKER"
+  services: ServiceInfo[]; // Typed extraction from JSON
+  logs: string[]; // Typed extraction from JSON
+  createdAt: string;
+}
+
 export function Project() {
   const { id, branch } = useParams<{ id: string; branch: string }>();
   const [project, setProject] = useState<any>(null);
@@ -32,6 +57,7 @@ export function Project() {
   const [stage, setStage] = useState<Stage>("CREATED");
   const [plan, setPlan] = useState<any>(null);
   const [gen, setGen] = useState<any>(null);
+  const [deployData, setDeployData] = useState<any>(null);
 
   const pollInterval = useRef<number | null>(null);
   const token = localStorage.getItem("token")!;
@@ -59,6 +85,9 @@ export function Project() {
       } else if (data.stage === "INFRA_GENERATING_DONE") {
         stopPolling();
         fetchInfraGen();
+      } else if (data.stage === "DEPLOYING_DONE") {
+        stopPolling();
+        fetchDeploy();
       } else if (data.stage === "FAILED") {
         stopPolling();
       }
@@ -145,20 +174,26 @@ export function Project() {
     startPolling();
   }
 
-  async function deployInfra() {
-    setStage("DEPLOYING_QUEUED");
-    setLoading(true);
+  const fetchDeploy = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setStage("DEPLOYING");
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setStage("DEPLOYING_DONE");
+      const res = await fetch(`${API_URL}/api/deploy/projects/${id}/deploy`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      console.log("Deploy Status:", data);
+      setDeployData(data); // Expects { status, logs: [], publicUrl }
     } catch (err) {
-      setStage("FAILED");
-      console.error("Deployment failed", err);
-    } finally {
-      setLoading(false);
+      console.error("Deploy status error:", err);
     }
+  };
+
+  async function deployProject() {
+    setStage("DEPLOYING");
+    await fetch(`${API_URL}/api/deploy/projects/${id}/deploy`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    startPolling();
   }
 
   const getPillarStatus = (
@@ -241,6 +276,12 @@ export function Project() {
       })
         .then((res) => res.json())
         .then((data) => setGen(data));
+
+      fetch(`${API_URL}/api/deploy/projects/${id}/deploy`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => res.json())
+        .then((data) => setDeployData(data));
     }
   }, [stage, id]);
 
@@ -394,7 +435,7 @@ export function Project() {
           )}
 
           {/* Planning View */}
-          {(stage === "INFRA_PLANNING_DONE" || 
+          {(stage === "INFRA_PLANNING_DONE" ||
             stage === "INFRA_GENERATING_QUEUED" ||
             stage === "INFRA_GENERATING" ||
             stage === "INFRA_GENERATING_DONE" ||
@@ -425,6 +466,24 @@ export function Project() {
                 </h3>
               </div>
               <InfraGenPreview gen={gen} />
+            </div>
+          )}
+
+          {(stage === "DEPLOYING_QUEUED" ||
+            stage === "DEPLOYING" ||
+            stage === "DEPLOYING_DONE") && (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <div className="flex items-center gap-2 mb-4">
+                <Rocket size={18} className="text-green-500" />
+                <h3 className="font-bold text-lg text-gray-800">
+                  Live Deployment
+                </h3>
+              </div>
+              {/* Pass the data to the new component */}
+              <DeployPreview
+                deploy={deployData as DeploymentResult}
+                stage={stage}
+              />
             </div>
           )}
 
@@ -482,12 +541,23 @@ export function Project() {
             )}
             {stage === "INFRA_GENERATING_DONE" && (
               <button
-                onClick={deployInfra}
+                onClick={deployProject}
                 className="btn-success flex items-center gap-2"
               >
                 <Rocket size={18} />
                 Confirm & Launch Project
               </button>
+            )}
+            {stage === "DEPLOYING_DONE" && deployData?.publicUrl && (
+              <a
+                href={deployData.publicUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-primary bg-green-600 hover:bg-green-700 border-green-700 flex items-center gap-2"
+              >
+                <Globe size={18} />
+                Visit Live App
+              </a>
             )}
           </div>
         </div>
