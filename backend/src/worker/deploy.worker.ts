@@ -4,6 +4,29 @@ import { prisma } from "../config/prisma";
 import { DEPLOY_QUEUE_NAME } from "../queue/deploy/deploy.queue";
 import { exec } from "child_process";
 import path from "path";
+import net from "net";
+
+function getAvailablePort(port: number): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const server = net.createServer();
+
+    server.once("error", (err: any) => {
+      if (err.code === "EADDRINUSE") {
+        // Port is busy, try the next one
+        resolve(getAvailablePort(port + 1));
+      } else {
+        reject(err);
+      }
+    });
+
+    server.once("listening", () => {
+      // Port is free! Close the test server and return the port.
+      server.close(() => resolve(port));
+    });
+
+    server.listen(port);
+  });
+}
 
 const worker = new Worker(
   DEPLOY_QUEUE_NAME,
@@ -43,7 +66,7 @@ const worker = new Worker(
           if (!infraGen.files || !Array.isArray(infraGen.files)) {
             throw new Error("Files configuration is missing or invalid");
           }
-          const dockerfile = infraGen.files[0] as { path: string }; 
+          const dockerfile = infraGen.files[0] as { path: string };
           const service = infraPlan.services[0] as { name: string };
 
           deploymentResult = await deploySingleService(
@@ -116,7 +139,8 @@ const worker = new Worker(
 );
 
 async function deploySingleService(repoPath: string, service: any, dockerfile: string, servicePath: string = ".") {
-  const imageName = `cortix-${service.name}`;
+  const randomId = Math.random().toString(36).substring(7);
+  const imageName = `cortix-${service.name}-${randomId}`;
   const containerName = `${imageName}-container`;
   const dockerfilePath = `infra/${dockerfile}`;
 
@@ -125,10 +149,16 @@ async function deploySingleService(repoPath: string, service: any, dockerfile: s
     repoPath
   );
 
+  const containerPort = service.run.port || 3000;
+  const hostPort = await getAvailablePort(containerPort + 1);
+  console.log(`Mapping Host Port ${hostPort} -> Container Port ${containerPort}`);
+
   await execPromise(
-    `docker run -d -p ${service.run.port}:${service.run.port} --name ${containerName} ${imageName}`,
+    `docker run -d -p ${hostPort}:${containerPort} --name ${containerName} ${imageName}`,
     repoPath
   );
+
+  const publicUrl = `http://localhost:${hostPort}`;
 
   return {
     services: [
@@ -137,7 +167,7 @@ async function deploySingleService(repoPath: string, service: any, dockerfile: s
         image: imageName,
         container: containerName,
         port: service.run.port,
-        url: `http://localhost:${service.run.port}`,
+        url: publicUrl
       },
     ],
   };
@@ -166,13 +196,13 @@ function execPromise(cmd: string, cwd: string) {
 }
 
 worker.on("ready", () => {
-    console.log("Deploy worker is ready");
+  console.log("Deploy worker is ready");
 });
 
 worker.on("completed", (job) => {
-    console.log(`Deploy Job ${job.id} completed`);
+  console.log(`Deploy Job ${job.id} completed`);
 });
 
 worker.on("failed", (job, err) => {
-    console.error(`Deploy Job ${job?.id} failed`, err);
+  console.error(`Deploy Job ${job?.id} failed`, err);
 });

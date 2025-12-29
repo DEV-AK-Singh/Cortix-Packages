@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+.btn-primary {  
+  @apply px-8 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 active:scale-95 cursor-pointer;
+}
+.btn-success {
+  @apply px-8 py-2.5 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transition-all shadow-lg shadow-gray-200 active:scale-95 cursor-pointer;
+}

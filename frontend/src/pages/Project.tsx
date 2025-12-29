@@ -35,18 +35,25 @@ type Stage =
 // 1. Define the Shape based on your Prisma Model
 interface ServiceInfo {
   name: string;
-  containerId: string;
-  port: number;
   url: string;
-  status: "running" | "stopped" | "failed";
+  port: number;
+  image: string;
+  container: string;
+  status?: "running" | "stopped" | "failed"; // Added optional status
 }
 
 interface DeploymentResult {
   id: string;
-  provider: string; // "LOCAL_DOCKER"
-  services: ServiceInfo[]; // Typed extraction from JSON
-  logs: string[]; // Typed extraction from JSON
+  projectId: string;
+  status: "QUEUED" | "IN_PROGRESS" | "COMPLETED" | "FAILED";
+  result: {
+    services: ServiceInfo[];
+  } | null;
+  error: string | null;
+  startedAt: string;
+  endedAt: string;
   createdAt: string;
+  logs?: string[]; // Assuming logs might be sent separately or added to this object
 }
 
 export function Project() {
@@ -211,7 +218,7 @@ export function Project() {
           "INFRA_GENERATING_DONE",
           "DEPLOYING_QUEUED",
           "DEPLOYING",
-          "DEPLOYED_DONE",
+          "DEPLOYING_DONE",
         ].includes(stage)
       )
         return "done";
@@ -228,7 +235,7 @@ export function Project() {
           "INFRA_GENERATING_DONE",
           "DEPLOYING_QUEUED",
           "DEPLOYING",
-          "DEPLOYED_DONE",
+          "DEPLOYING_DONE",
         ].includes(stage)
       )
         return "done";
@@ -242,7 +249,7 @@ export function Project() {
           "INFRA_GENERATING_DONE",
           "DEPLOYING_QUEUED",
           "DEPLOYING",
-          "DEPLOYED_DONE",
+          "DEPLOYING_DONE",
         ].includes(stage)
       )
         return "done";
@@ -251,7 +258,7 @@ export function Project() {
       return "pending";
     }
     if (pillar === "deploy") {
-      if (["DEPLOYED_DONE"].includes(stage)) return "done";
+      if (["DEPLOYING_DONE"].includes(stage)) return "done";
       if (stage === "DEPLOYING") return "active";
       if (stage === "FAILED") return "failed";
       return "pending";
@@ -548,12 +555,12 @@ export function Project() {
                 Confirm & Launch Project
               </button>
             )}
-            {stage === "DEPLOYING_DONE" && deployData?.publicUrl && (
+            {stage === "DEPLOYING_DONE" && deployData?.result?.services[0]?.url && (
               <a
-                href={deployData.publicUrl}
+                href={deployData?.result?.services[0]?.url}
                 target="_blank"
                 rel="noreferrer"
-                className="btn-primary bg-green-600 hover:bg-green-700 border-green-700 flex items-center gap-2"
+                className="btn-primary flex items-center gap-2"
               >
                 <Globe size={18} />
                 Visit Live App
@@ -565,12 +572,6 @@ export function Project() {
 
       {/* Tailwind Component Styles */}
       <style>{`
-        .btn-primary {
-          @apply px-8 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 active:scale-95;
-        }
-        .btn-success {
-          @apply px-8 py-2.5 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transition-all shadow-lg shadow-gray-200 active:scale-95;
-        }
       `}</style>
     </div>
   );
