@@ -116,6 +116,8 @@ model Project {
   infrastructurePlanResult InfrastructurePlanResult[]
   infrastructureGenJobs  InfrastructureGenJob[]
   infrastructureGenResult InfrastructureGenResult[]
+  deploymentJobs     DeploymentJob[]
+  deploymentResult   DeploymentResult[]
 
   @@unique([repoProvider, repoId, defaultBranch])
 }
@@ -226,4 +228,40 @@ model InfrastructureGenResult {
   updatedAt   DateTime @updatedAt
 
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+enum DeploymentStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+model DeploymentJob {
+  id        String            @id @default(uuid())
+  projectId String
+  status    DeploymentStatus  @default(PENDING)
+  result    Json?
+  error     String?
+  startedAt DateTime?
+  endedAt   DateTime?
+  createdAt DateTime          @default(now())
+
+  project   Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+}
+
+model DeploymentResult {
+  id          String   @id @default(uuid())
+  projectId   String   @unique
+  provider    String   // LOCAL_DOCKER | VPS | CLOUD (future)
+  services    Json     // containerId, ports, urls
+  logs        Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
 }

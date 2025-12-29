@@ -115,9 +115,9 @@ worker.on("ready", () => {
 });
 
 worker.on("completed", (job) => {
-    console.log(`Job ${job.id} completed`);
+    console.log(`Analysis Job ${job.id} completed`);
 });
 
 worker.on("failed", (job, err) => {
-    console.error(`Job ${job?.id} failed`, err);
+    console.error(`Analysis Job ${job?.id} failed`, err);
 });
