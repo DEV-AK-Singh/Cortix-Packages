@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import LoginSuccess from "./pages/LoginSuccess";
 import { AuthProvider } from "./context/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute"; 
+import ProtectedRoute from "./components/ProtectedRoute";
 import { Project } from "./pages/Project";
 
 export default function App() {
@@ -20,7 +20,7 @@ export default function App() {
                 <Dashboard />
               </ProtectedRoute>
             }
-          /> 
+          />
           <Route
             path="/projects/:id/branches/:branch"
             element={

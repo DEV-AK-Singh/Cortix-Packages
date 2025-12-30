@@ -91,7 +91,7 @@ export const ProjectAnalyzer = {
         metadata: metadata.data,
         languages: languages.data,
       },
-      services: Array.from(serviceMap.values()) as ServiceManifest[],
+      services: Array.from(serviceMap.values()).filter(s => s.frameworks && s.frameworks.length > 0) as ServiceManifest[],
       infrastructure: {
         ciCd: cicd.data || [],
         deployment: deployment.data || [],

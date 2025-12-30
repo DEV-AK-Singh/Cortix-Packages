@@ -12,6 +12,8 @@ interface User {
 interface AuthContextType {
   user: User | null;
   repos: Array<any>;
+  envValues: Record<string, string>;
+  setEnvValues: (envs: Record<string, string>) => void;
   loading: boolean;
   logout: () => void;
 }
@@ -21,6 +23,7 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [repos, setRepos] = useState<any[]>([]);
   const [user, setUser] = useState<User | null>(null);
+  const [envValues, setEnvValues] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -50,7 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, repos, logout }}>
+    <AuthContext.Provider value={{ user, loading, repos, envValues, setEnvValues, logout }}>
       {children}
     </AuthContext.Provider>
   );

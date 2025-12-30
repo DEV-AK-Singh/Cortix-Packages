@@ -13,6 +13,7 @@ import { AnalysisReport } from "../components/AnalysisReport";
 import { InfraPlanPreview } from "../components/InfraPlanPreview";
 import { InfraGenPreview } from "../components/InfraGenPreview";
 import { DeployPreview } from "../components/DeployPreview";
+import { useAuth } from "../context/AuthContext";
 
 const API_URL = "http://localhost:5000";
 
@@ -65,6 +66,8 @@ export function Project() {
   const [plan, setPlan] = useState<any>(null);
   const [gen, setGen] = useState<any>(null);
   const [deployData, setDeployData] = useState<any>(null);
+
+  const { envValues } = useAuth();
 
   const pollInterval = useRef<number | null>(null);
   const token = localStorage.getItem("token")!;
@@ -141,6 +144,7 @@ export function Project() {
     try {
       const res = await fetch(`${API_URL}/api/infra-plan/projects/${id}/plan`, {
         headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ envValues }),
       });
       const data = await res.json();
       console.log(data);
@@ -383,7 +387,7 @@ export function Project() {
 
       <main className="max-w-5xl mx-auto p-6 space-y-6">
         {/* 2. The Pipeline Stepper Card */}
-        <div className="bg-white border rounded-2xl shadow-sm overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
           <div className="p-4 border-b bg-gray-50/50 flex items-center gap-2">
             <Terminal size={16} className="text-gray-400" />
             <h2 className="text-sm font-bold text-gray-600">
@@ -555,17 +559,18 @@ export function Project() {
                 Confirm & Launch Project
               </button>
             )}
-            {stage === "DEPLOYING_DONE" && deployData?.result?.services[0]?.url && (
-              <a
-                href={deployData?.result?.services[0]?.url}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-primary flex items-center gap-2"
-              >
-                <Globe size={18} />
-                Visit Live App
-              </a>
-            )}
+            {stage === "DEPLOYING_DONE" &&
+              deployData?.result?.services[0]?.url && (
+                <a
+                  href={deployData?.result?.services[0]?.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-primary flex items-center gap-2"
+                >
+                  <Globe size={18} />
+                  Visit Live App
+                </a>
+              )}
           </div>
         </div>
       </footer>

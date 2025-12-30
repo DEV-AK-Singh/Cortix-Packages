@@ -69,13 +69,10 @@ export function Repos() {
           ))}
         </div>
       ) : (
-        // LOADER PLACEHOLDER REPOS
         <div>
-          {
-            [...Array(10)].map((_, idx) => (
-              <LoadingRepoPlaceholder key={idx} />
-            ))
-          }
+          {[...Array(10)].map((_, idx) => (
+            <LoadingRepoPlaceholder key={idx} />
+          ))}
         </div>
       )}
     </div>
