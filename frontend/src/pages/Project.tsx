@@ -67,7 +67,9 @@ export function Project() {
   const [gen, setGen] = useState<any>(null);
   const [deployData, setDeployData] = useState<any>(null);
 
-  const { envValues } = useAuth();
+  const { envVars } = useAuth();
+
+  // console.log("Env Values in Project Page:", envVars);
 
   const pollInterval = useRef<number | null>(null);
   const token = localStorage.getItem("token")!;
@@ -144,7 +146,6 @@ export function Project() {
     try {
       const res = await fetch(`${API_URL}/api/infra-plan/projects/${id}/plan`, {
         headers: { Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ envValues }),
       });
       const data = await res.json();
       console.log(data);
@@ -158,7 +159,8 @@ export function Project() {
     setStage("INFRA_PLANNING");
     await fetch(`${API_URL}/api/infra-plan/projects/${id}/plan`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ envVars }),
     });
     startPolling();
   }

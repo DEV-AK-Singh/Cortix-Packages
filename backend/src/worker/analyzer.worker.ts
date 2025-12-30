@@ -1,7 +1,7 @@
 import { Worker } from "bullmq";
 import { redis } from "../config/redis";
 import { ANALYSIS_QUEUE_NAME } from "../queue/analysis/analysis.queue";
-import { prisma } from "../config/prisma"; 
+import { prisma } from "../config/prisma";
 import { runAnalysis } from "../analysis/analysis.service";
 
 const worker = new Worker(
@@ -58,7 +58,7 @@ const worker = new Worker(
             await prisma.analysisJob.update({
                 where: { id: analysisJobId },
                 data: {
-                    status: "COMPLETED", 
+                    status: "COMPLETED",
                     result: JSON.parse(JSON.stringify(report)) as any,
                     endedAt: new Date(),
                 },

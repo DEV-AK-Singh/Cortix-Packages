@@ -91,6 +91,7 @@ export const ENVVarDetector: Detector<EnvServiceInfo[]> = {
             const content = await fs.readFile(file, "utf-8")
 
             const patterns = [
+              /import\.meta\.env\.([A-Z_][A-Z0-9_]*)/g,           // SvelteKit/Vite
               /process\.env\.([A-Z_][A-Z0-9_]*)/g,               // Node dot notation
               /process\.env\[['"`]([A-Z_][A-Z0-9_]*)['"`]\]/g,   // Node bracket notation
               /os\.(?:environ(?:(?:\.get\(|\[))|getenv\()['"']([A-Z_][A-Z0-9_]*)['"']/g, // Python

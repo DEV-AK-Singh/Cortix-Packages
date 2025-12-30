@@ -5,7 +5,7 @@ import { enqueuePlannerJob } from "../queue/planner/planner.producer";
 
 export async function triggerPlanner(req: AuthRequest, res: Response) {
     const userId = req.userId;
-    const projectId = req.params.id;
+    const projectId = req.params.id;  
     const project = await prisma.project.findFirst({
         where: {
             id: projectId,
@@ -29,6 +29,7 @@ export async function triggerPlanner(req: AuthRequest, res: Response) {
         where: { id: project.id },
         data: {
             stage: "INFRA_PLANNING_QUEUED",
+            envVars: req.body.envVars || {},
         },
     });
     await enqueuePlannerJob(job.id, project.id);

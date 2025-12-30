@@ -2,31 +2,8 @@ import { Worker } from "bullmq";
 import { redis } from "../config/redis";
 import { prisma } from "../config/prisma";
 import { DEPLOY_QUEUE_NAME } from "../queue/deploy/deploy.queue";
-import { exec } from "child_process";
 import path from "path";
-import net from "net";
-
-function getAvailablePort(port: number): Promise<number> {
-  return new Promise((resolve, reject) => {
-    const server = net.createServer();
-
-    server.once("error", (err: any) => {
-      if (err.code === "EADDRINUSE") {
-        // Port is busy, try the next one
-        resolve(getAvailablePort(port + 1));
-      } else {
-        reject(err);
-      }
-    });
-
-    server.once("listening", () => {
-      // Port is free! Close the test server and return the port.
-      server.close(() => resolve(port));
-    });
-
-    server.listen(port);
-  });
-}
+import { deployCompose, deploySingleService } from "../deploy/deploy.service";
 
 const worker = new Worker(
   DEPLOY_QUEUE_NAME,
@@ -137,63 +114,6 @@ const worker = new Worker(
   },
   { connection: redis }
 );
-
-async function deploySingleService(repoPath: string, service: any, dockerfile: string, servicePath: string = ".") {
-  const randomId = Math.random().toString(36).substring(7);
-  const imageName = `cortix-${service.name}-${randomId}`;
-  const containerName = `${imageName}-container`;
-  const dockerfilePath = `infra/${dockerfile}`;
-
-  await execPromise(
-    `docker build -t ${imageName} -f ${dockerfilePath} ${servicePath}`,
-    repoPath
-  );
-
-  const containerPort = service.run.port || 3000;
-  const hostPort = await getAvailablePort(containerPort + 1);
-  console.log(`Mapping Host Port ${hostPort} -> Container Port ${containerPort}`);
-
-  await execPromise(
-    `docker run -d -p ${hostPort}:${containerPort} --name ${containerName} ${imageName}`,
-    repoPath
-  );
-
-  const publicUrl = `http://localhost:${hostPort}`;
-
-  return {
-    services: [
-      {
-        name: service.name,
-        image: imageName,
-        container: containerName,
-        port: service.run.port,
-        url: publicUrl
-      },
-    ],
-  };
-}
-
-async function deployCompose(repoPath: string) {
-  await execPromise(`docker compose up -d --build`, repoPath);
-
-  return {
-    services: [
-      {
-        name: "compose-stack",
-        status: "running",
-      },
-    ],
-  };
-}
-
-function execPromise(cmd: string, cwd: string) {
-  return new Promise((resolve, reject) => {
-    exec(cmd, { cwd }, (err, stdout, stderr) => {
-      if (err) return reject(stderr || err.message);
-      resolve(stdout);
-    });
-  });
-}
 
 worker.on("ready", () => {
   console.log("Deploy worker is ready");

@@ -55,13 +55,6 @@ export async function runAnalysis({
         console.error(`[${projectId}] ❌ Analysis failed:`, error.message);
         return null;
     } finally {
-        console.log(`[${projectId}] 🧹 Cleaning up...`);
-        // 5. Cleanup temporary files
-        // try {
-        //     await fs.rm(repoDir, { recursive: true, force: true });
-        //     console.log(`[${projectId}] 🧹 Cleaned up temporary files.`);
-        // } catch (cleanupError) {
-        //     console.error(`[${projectId}] Cleanup failed`, cleanupError);
-        // }
+        console.log(`[${projectId}] 🧹 Cleaning up...`); 
     }
 }

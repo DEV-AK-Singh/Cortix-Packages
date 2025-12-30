@@ -1,4 +1,6 @@
 import { prisma } from "../config/prisma";
+import dotenv from "dotenv";
+dotenv.config();
 
 export async function planInfrastructure(projectId: string) {
     const analysis = await prisma.analysisResult.findUnique({
@@ -16,7 +18,7 @@ export async function planInfrastructure(projectId: string) {
 
         return {
             name: service.name,
-            path: service.relativePath,
+            path: service.path || ".",
             runtime: service.runtime?.runtime || "node",
             framework: service.frameworks?.[0]?.name,
             build: {
@@ -37,7 +39,7 @@ export async function planInfrastructure(projectId: string) {
 
     const deploymentStrategy = isMonorepo ? "DOCKER_COMPOSE" : "DOCKER_SINGLE";
 
-    const finalInfrastructurePlan = { projectId, deploymentStrategy, services: servicePlans, network: { internalDomain: `${projectId}.local`, exposedPorts: [80] } };
+    const finalInfrastructurePlan = { projectId, deploymentStrategy, services: servicePlans, network: { internalDomain: `${projectId}.local`, exposedPorts: [80] } }; 
 
     return finalInfrastructurePlan;
 }
@@ -49,3 +51,7 @@ function detectPort(service: any): number {
     if (framework === "express") return 5000;
     return 3000;
 } 
+
+// planInfrastructure("7716c6d0-e831-427c-ab69-f9766330404a").catch((err) => {
+//     console.error("Error planning infrastructure:", err);
+// });

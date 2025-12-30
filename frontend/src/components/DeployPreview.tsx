@@ -147,7 +147,7 @@ export function DeployPreview({ deploy, stage }: { deploy: DeploymentResult | nu
                       </a>
                     </div>
                     <p className="text-[10px] text-gray-400 font-mono truncate bg-gray-50 p-1 rounded">
-                      ID: {svc.container.slice(0, 12)}...
+                      ID: {svc.container?.slice(0, 12)}...
                     </p>
                   </div>
                 ))

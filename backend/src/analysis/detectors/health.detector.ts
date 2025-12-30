@@ -78,6 +78,11 @@ export const HealthDetector: Detector<HealthInfo[]> = {
         if (workflows.length > 0) {
           score += 5 // Bonus for CI
           indicators.push("has-ci-pipeline")
+        } 
+
+        const nginxConfigs = await fg(["**/nginx.conf"], { cwd: servicePath, deep: 3 })
+        if (nginxConfigs.length > 0) {
+          indicators.push("has-nginx-config")
         }
 
         score = Math.max(0, Math.min(score, 100))
@@ -87,7 +92,7 @@ export const HealthDetector: Detector<HealthInfo[]> = {
           hasLicense,
           hasTests,
           testIndicators: hasTests ? tests.slice(0, 3) : undefined,
-          indicators,
+          indicators, 
           score,
           path: servicePath,
           relativePath,

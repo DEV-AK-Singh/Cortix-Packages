@@ -1,6 +1,6 @@
 import { Worker } from "bullmq";
-import { redis } from "../config/redis"; 
-import { prisma } from "../config/prisma";  
+import { redis } from "../config/redis";
+import { prisma } from "../config/prisma";
 import { PLANNER_QUEUE_NAME } from "../queue/planner/planner.queue";
 import { planInfrastructure } from "../infra-planner/planner.service";
 
@@ -19,13 +19,14 @@ const worker = new Worker(
         }
 
         try {
-            const infrastructurePlan = await planInfrastructure(projectId);  
+            const infrastructurePlan = await planInfrastructure(projectId);
 
             await prisma.infrastructurePlanJob.update({
                 where: { id: plannerJobId },
                 data: {
-                    status: "COMPLETED", 
+                    status: "COMPLETED",
                     result: JSON.parse(JSON.stringify(infrastructurePlan)) as any,
+                    startedAt: new Date(),
                     endedAt: new Date(),
                 },
             });
