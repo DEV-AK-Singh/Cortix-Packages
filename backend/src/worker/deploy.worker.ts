@@ -50,7 +50,7 @@ const worker = new Worker(
             repoPath,
             infraPlan.services[0],
             dockerfile.path,
-            service.name === "root" ? "." : service.name
+            "."
           );
           break;
 

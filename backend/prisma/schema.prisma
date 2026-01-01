@@ -98,11 +98,11 @@ model Project {
   userId        String
   name          String
   description   String?
-  repoProvider  RepoProvider
-  repoOwner     String
-  repoName      String
   repoId        String
+  repoName      String
+  repoOwner     String
   defaultBranch String
+  repoProvider  RepoProvider
   stage         ProjectStage  @default(CREATED)
   status        ProjectStatus @default(ACTIVE)
   branches      Branch[]
